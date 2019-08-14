@@ -1,7 +1,18 @@
 ---
 env:
   node: true
+  browser: true
   es6: true
 
+parserOptions:
+  ecmaVersion: 6
+  sourceType: module
+
 extends:
-  - bundle/env/core
+  - bundle/env/core.yaml
+
+rules:
+  import/no-extraneous-dependencies:
+    - error
+    - devDependencies:
+      - "webpack.*.js"
