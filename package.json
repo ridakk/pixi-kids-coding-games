@@ -47,6 +47,7 @@
     "eslint-plugin-node": "^9.1.0",
     "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-security": "^1.4.0",
+    "favicons-webpack-plugin": "0.0.9",
     "html-webpack-plugin": "^3.2.0",
     "husky": "^2.4.0",
     "standard-version": "^6.0.1",
