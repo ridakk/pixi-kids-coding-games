@@ -25,17 +25,18 @@ sharedLoader.add('roads', 'assets/images/roads.json');
 sharedLoader.add('cars', 'assets/images/cars.json');
 
 sharedLoader.load((loader, resources) => {
-  const png1 = new PIXI.Sprite(resources.roads.textures['1.png']);
+  const png1 = new PIXI.Sprite(resources.roads.textures.road1);
   png1.position.set(app.renderer.width / 2, app.renderer.height / 2);
   png1.anchor.set(0.5);
+
   app.stage.addChild(png1);
 
-  const png5 = new PIXI.Sprite(resources.roads.textures['5.png']);
+  const png5 = new PIXI.Sprite(resources.roads.textures.road5);
   png5.position.set(676, 339);
   png5.anchor.set(0.5);
   app.stage.addChild(png5);
 
-  const ca1 = new PIXI.Sprite(resources.cars.textures['11.png']);
+  const ca1 = new PIXI.Sprite(resources.cars.textures.car11);
   ca1.position.set(717, 304);
   ca1.anchor.set(0.5);
   ca1.scale.set(0.7);
