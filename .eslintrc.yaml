@@ -16,3 +16,7 @@ rules:
     - error
     - devDependencies:
       - "webpack.*.js"
+  import/no-unassigned-import: 
+    - 2
+    - allowed:
+      - "*.css"

@@ -1,35 +1,48 @@
 import * as PIXI from 'pixi.js';
+import { Easing, Tween, autoPlay } from 'es6-tween';
 
-// The application will create a renderer using WebGL, if possible,
-// with a fallback to a canvas render. It will also setup the ticker
-// and the root stage PIXI.Container
-const app = new PIXI.Application();
+import 'normalize.css';
+import './index.css';
 
-// The application will create a canvas element for you that you
-// can then insert into the DOM
+autoPlay(true);
+
+PIXI.WebGLRenderer = PIXI.Renderer;
+window.__PIXI_INSPECTOR_GLOBAL_HOOK__
+  && window.__PIXI_INSPECTOR_GLOBAL_HOOK__.register({ PIXI });
+
+const app = new PIXI.Application({
+  width: 1280,
+  height: 720,
+  sharedTicker: true,
+  sharedLoader: true,
+  backgroundColor: 0x000000,
+});
 document.body.appendChild(app.view);
 
-// load the texture we need
-app.loader.add('bunny', 'assets/images/anthropomorphic-2025127_1280.png').load((loader, resources) => {
-  // This creates a texture from a 'bunny.png' image
-  const bunny = new PIXI.Sprite(resources.bunny.texture);
+const sharedLoader = PIXI.Loader.shared;
 
-  // Setup the position of the bunny
-  bunny.x = app.renderer.width / 2;
-  bunny.y = app.renderer.height / 2;
+sharedLoader.add('roads', 'assets/images/roads.json');
+sharedLoader.add('cars', 'assets/images/cars.json');
 
-  // Rotate around the center
-  bunny.anchor.x = 0.5;
-  bunny.anchor.y = 0.5;
+sharedLoader.load((loader, resources) => {
+  const png1 = new PIXI.Sprite(resources.roads.textures['1.png']);
+  png1.position.set(app.renderer.width / 2, app.renderer.height / 2);
+  png1.anchor.set(0.5);
+  app.stage.addChild(png1);
 
-  bunny.scale.set(0.3);
+  const png5 = new PIXI.Sprite(resources.roads.textures['5.png']);
+  png5.position.set(676, 339);
+  png5.anchor.set(0.5);
+  app.stage.addChild(png5);
 
-  // Add the bunny to the scene we are building
-  app.stage.addChild(bunny);
+  const ca1 = new PIXI.Sprite(resources.cars.textures['11.png']);
+  ca1.position.set(717, 304);
+  ca1.anchor.set(0.5);
+  ca1.scale.set(0.7);
+  app.stage.addChild(ca1);
 
-  // Listen for frame updates
-  app.ticker.add(() => {
-    // each frame we spin the bunny around a bit
-    bunny.rotation += 0.01;
-  });
+  new Tween(ca1)
+    .to({ x: 624, y: 357 }, 1000)
+    .easing(Easing.Quadratic.Out)
+    .start();
 });

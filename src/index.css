@@ -1,0 +1,13 @@
+body {
+  display: grid;
+  place-items: center;
+  height: 100vh;
+  background-color: white;
+}
+
+.credits {
+  position: absolute;
+	bottom: 0px;
+  text-align: center;
+  width:100%;
+}

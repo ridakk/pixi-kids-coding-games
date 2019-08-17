@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "2D coding games for kids with PIXI.js",
   "scripts": {
-    "start": "webpack-dev-server --open --config webpack.dev.js",
+    "start": "webpack-dev-server --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "release": "standard-version",
     "lint": "eslint ."
@@ -38,6 +38,7 @@
     "babel-loader": "^8.0.6",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^5.0.4",
+    "css-loader": "^3.2.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-bundle": "^1.0.2",
@@ -51,12 +52,15 @@
     "html-webpack-plugin": "^3.2.0",
     "husky": "^2.4.0",
     "standard-version": "^6.0.1",
+    "style-loader": "^1.0.0",
     "webpack": "^4.39.2",
     "webpack-cli": "^3.3.6",
     "webpack-dev-server": "^3.8.0",
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
+    "es6-tween": "^5.5.10",
+    "normalize.css": "^8.0.1",
     "pixi.js": "^5.1.1"
   }
 }

@@ -4,4 +4,4 @@
 
 ## Credits
 
-Thanks to [pixabay](https://pixabay.com/) for stunning free images.
+[Tree vector created by macrovector - www.freepik.com](https://www.freepik.com/free-photos-vectors/tree)
