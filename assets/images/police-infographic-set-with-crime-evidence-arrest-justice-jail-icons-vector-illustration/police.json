@@ -1,0 +1,28 @@
+{"frames": {
+
+"policecar":
+{
+	"frame": {"x":0,"y":0,"w":267,"h":97},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":267,"h":97},
+	"sourceSize": {"w":267,"h":97}
+},
+"policeman":
+{
+	"frame": {"x":267,"y":0,"w":152,"h":203},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":152,"h":203},
+	"sourceSize": {"w":152,"h":203}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "police.png",
+	"format": "RGBA8888",
+	"size": {"w":419,"h":203},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:3609559b5a482bcea60a3c9ab4982249:472de6305590b7ccbb1318dba0e45810:da7918761e6bbec3d2b85b0668dbb547$"
+}
+}
