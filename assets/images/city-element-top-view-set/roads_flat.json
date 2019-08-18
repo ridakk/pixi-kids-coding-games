@@ -1,0 +1,63 @@
+{"frames": {
+
+"bridge1":
+{
+	"frame": {"x":0,"y":0,"w":96,"h":96},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":96,"h":96},
+	"sourceSize": {"w":96,"h":96}
+},
+"bridge2":
+{
+	"frame": {"x":96,"y":0,"w":149,"h":150},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":149,"h":150},
+	"sourceSize": {"w":149,"h":150}
+},
+"pedestrian":
+{
+	"frame": {"x":0,"y":150,"w":39,"h":39},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":39,"h":39},
+	"sourceSize": {"w":39,"h":39}
+},
+"road1":
+{
+	"frame": {"x":39,"y":150,"w":39,"h":39},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":39,"h":39},
+	"sourceSize": {"w":39,"h":39}
+},
+"roundaround":
+{
+	"frame": {"x":0,"y":189,"w":179,"h":179},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":179,"h":179},
+	"sourceSize": {"w":179,"h":179}
+},
+"turn":
+{
+	"frame": {"x":179,"y":189,"w":39,"h":39},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":39,"h":39},
+	"sourceSize": {"w":39,"h":39}
+}},
+"animations": {
+	"bridge": ["bridge1","bridge2"]
+},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "roads_flat.png",
+	"format": "RGBA8888",
+	"size": {"w":245,"h":368},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:e04681115e890f10a0bcfae1de1fbe0f:a34c4c526083ec1a8bdc042ba9395e85:b288abee60d6b3e272bf8f468bcb8c5c$"
+}
+}

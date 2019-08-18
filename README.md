@@ -4,5 +4,4 @@
 
 ## Credits
 
-- [Tree vector created by macrovector - www.freepik.com](https://www.freepik.com/free-photos-vectors/tree)
-- [Car vector created by macrovector - www.freepik.com](https://www.freepik.com/free-photos-vectors/car)
+- [Designed by macrovector / Freepik](http://www.freepik.com)

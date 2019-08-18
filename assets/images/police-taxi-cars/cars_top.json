@@ -1,0 +1,28 @@
+{"frames": {
+
+"police":
+{
+	"frame": {"x":0,"y":0,"w":211,"h":462},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":211,"h":462},
+	"sourceSize": {"w":211,"h":462}
+},
+"taxi":
+{
+	"frame": {"x":211,"y":0,"w":221,"h":452},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":221,"h":452},
+	"sourceSize": {"w":221,"h":452}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "cars_top.png",
+	"format": "RGBA8888",
+	"size": {"w":432,"h":462},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:a55c64fd8812cb3a3c6185f1d914a4b7:c0fa1cc02825fe8248d684e950123350:9ef3ffe99ac06e3cb3bf252b509c8d58$"
+}
+}

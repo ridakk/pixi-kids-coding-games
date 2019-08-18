@@ -19,31 +19,41 @@ const app = new PIXI.Application({
 });
 document.body.appendChild(app.view);
 
+const cont = new PIXI.Container();
+app.stage.addChild(cont);
+
 const sharedLoader = PIXI.Loader.shared;
 
-sharedLoader.add('roads', 'assets/images/roads.json');
-sharedLoader.add('cars', 'assets/images/cars.json');
+sharedLoader.add('roads', 'assets/images/city-element-top-view-set/roads_flat.json');
+sharedLoader.add('cars', 'assets/images/flat-collection-different-car-models/cars_flat.json');
 
 sharedLoader.load((loader, resources) => {
-  const png1 = new PIXI.Sprite(resources.roads.textures.road1);
-  png1.position.set(app.renderer.width / 2, app.renderer.height / 2);
-  png1.anchor.set(0.5);
+  const p1 = new PIXI.Sprite(resources.roads.textures.road1);
+  p1.position.set(app.renderer.width / 2, app.renderer.height / 2);
+  p1.anchor.set(0.5);
 
-  app.stage.addChild(png1);
+  cont.addChild(p1);
 
-  const png5 = new PIXI.Sprite(resources.roads.textures.road5);
-  png5.position.set(676, 339);
-  png5.anchor.set(0.5);
-  app.stage.addChild(png5);
+  const p2 = new PIXI.Sprite(resources.roads.textures.turn);
+  p2.position.set(p1.x + p1.width - 1, p1.y);
+  p2.anchor.set(0.5);
+  p2.rotation = -90 * (Math.PI / 180);
+  cont.addChild(p2);
 
-  const ca1 = new PIXI.Sprite(resources.cars.textures.car11);
-  ca1.position.set(717, 304);
+  const p3 = new PIXI.Sprite(resources.roads.textures.road1);
+  p3.position.set(p1.x + p1.width - 1, p2.y - p2.height);
+  p3.anchor.set(0.5);
+  p3.rotation = -90 * (Math.PI / 180);
+  cont.addChild(p3);
+
+  const ca1 = new PIXI.Sprite(resources.cars.textures.coupe);
+  ca1.position.set(p1.x, p1.y);
   ca1.anchor.set(0.5);
   ca1.scale.set(0.7);
-  app.stage.addChild(ca1);
+  cont.addChild(ca1);
 
   new Tween(ca1)
-    .to({ x: 624, y: 357 }, 1000)
+    .to({ x: p1.x + 300 }, 1000)
     .easing(Easing.Quadratic.Out)
     .start();
 });
