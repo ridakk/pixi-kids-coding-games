@@ -61,6 +61,7 @@
   },
   "dependencies": {
     "es6-tween": "^5.5.10",
+    "eventemitter3": "^4.0.0",
     "lodash": "^4.17.15",
     "normalize.css": "^8.0.1",
     "pixi-sound": "^3.0.3",

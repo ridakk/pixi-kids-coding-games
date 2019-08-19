@@ -1,6 +1,12 @@
 import * as PIXI from 'pixi.js';
 import * as _ from 'lodash';
 import { Easing, Tween, autoPlay } from 'es6-tween';
+import Loader from './Loader';
+import { PRELOADER_COMPLETE, LOADER_COMPLETE, LOADER_PROGRESS } from './Loader/events';
+import eventEmitter from './eventEmitter';
+import {
+  PRELOADER_ASSETS, IMAGES, SOUNDS, FONTS,
+} from './Config';
 
 import 'normalize.css';
 import './index.css';
@@ -34,15 +40,24 @@ const app = new PIXI.Application({
 document.body.appendChild(app.view);
 
 const cont = new PIXI.Container();
-const sharedLoader = PIXI.Loader.shared;
 
 app.stage.addChild(cont);
 
-sharedLoader.add('roads', 'assets/images/city-element-top-view-set/roads_flat.json');
-sharedLoader.add('cars', 'assets/images/police-taxi-cars/cars_top.json');
-sharedLoader.add('police', 'assets/images/police-infographic-set-with-crime-evidence-arrest-justice-jail-icons-vector-illustration/police.json');
+const loader = new Loader(PRELOADER_ASSETS, IMAGES, SOUNDS, FONTS);
+eventEmitter.on(PRELOADER_COMPLETE, () => {
+  console.log('preloader complete');
+});
 
-sharedLoader.load(setup);
+eventEmitter.on(LOADER_COMPLETE, () => {
+  console.log('loader complete');
+  setup();
+});
+
+eventEmitter.on(LOADER_PROGRESS, (progess) => {
+  console.log(`progress: ${progess}`);
+});
+
+loader.load();
 
 /**
  * generate roads map or another map
@@ -65,7 +80,8 @@ function addGround(startX, startY, max, sprites, map) {
   }
 }
 
-function setup(loader, resources) {
+function setup() {
+  const { resources } = PIXI.Loader.shared;
   const area = new PIXI.Graphics();
   area.beginFill(0xB1D1D4);
   area.lineStyle(1, 0x000000);
@@ -105,14 +121,14 @@ function setup(loader, resources) {
   const groundSprite = [];
 
   for (let i = 0; i < 4; i++) {
-    const turnSprite = new PIXI.Sprite(resources.roads.textures.turn);
+    const turnSprite = new PIXI.Sprite(resources.roads_flat.textures.turn);
     turnSprite.anchor.set(0.5);
     turnSprite.rotation = (Math.PI * i) / 2;
     groundSprite.push(turnSprite);
   }
 
   for (let i = 0; i < 4; i++) {
-    const road1 = new PIXI.Sprite(resources.roads.textures.road1);
+    const road1 = new PIXI.Sprite(resources.roads_flat.textures.road1);
     road1.anchor.set(0.5);
     road1.rotation = (Math.PI * i) / 2;
     groundSprite.push(road1);
@@ -120,24 +136,24 @@ function setup(loader, resources) {
 
   addGround(30, 45, 8, groundSprite, groundMap);
 
-  // const p1 = new PIXI.Sprite(resources.roads.textures.road1);
+  // const p1 = new PIXI.Sprite(resources.roads_flat.textures.road1);
   // p1.position.set(app.renderer.width / 2, app.renderer.height / 2);
   // p1.anchor.set(0.5);
   // cont.addChild(p1);
 
-  // const p2 = new PIXI.Sprite(resources.roads.textures.turn);
+  // const p2 = new PIXI.Sprite(resources.roads_flat.textures.turn);
   // p2.position.set(p1.x + p1.width - 1, p1.y);
   // p2.anchor.set(0.5);
   // p2.rotation = -90 * (Math.PI / 180);
   // cont.addChild(p2);
 
-  // const p3 = new PIXI.Sprite(resources.roads.textures.road1);
+  // const p3 = new PIXI.Sprite(resources.roads_flat.textures.road1);
   // p3.position.set(p1.x + p1.width - 1, p2.y - p2.height);
   // p3.anchor.set(0.5);
   // p3.rotation = -90 * (Math.PI / 180);
   // cont.addChild(p3);
 
-  // const ca1 = new PIXI.Sprite(resources.cars.textures.police);
+  // const ca1 = new PIXI.Sprite(resources.cars_top.textures.police);
   // ca1.anchor.set(0.5);
   // ca1.scale.set(0.3);
   // ca1.position.set(app.renderer.width / 2, app.renderer.height - 80 - ca1.height * 0.5);
