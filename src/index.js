@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import * as _ from 'lodash';
 import { Easing, Tween, autoPlay } from 'es6-tween';
 
 import 'normalize.css';
@@ -7,8 +8,20 @@ import './index.css';
 autoPlay(true);
 
 PIXI.WebGLRenderer = PIXI.Renderer;
-window.__PIXI_INSPECTOR_GLOBAL_HOOK__
-  && window.__PIXI_INSPECTOR_GLOBAL_HOOK__.register({ PIXI });
+window.__PIXI_INSPECTOR_GLOBAL_HOOK__ && window.__PIXI_INSPECTOR_GLOBAL_HOOK__.register({ PIXI });
+
+// groundMap
+const groundMap = {
+  width: 4,
+  height: 4,
+  tiles: [
+    1, 4, 4, 2,
+    5, 8, 8, 7,
+    5, 8, 8, 7,
+    0, 6, 6, 3,
+  ],
+  tileSize: 39,
+};
 
 const app = new PIXI.Application({
   width: 1280,
@@ -17,18 +30,42 @@ const app = new PIXI.Application({
   sharedLoader: true,
   backgroundColor: 0xB1D1D4,
 });
+
 document.body.appendChild(app.view);
 
 const cont = new PIXI.Container();
-app.stage.addChild(cont);
-
 const sharedLoader = PIXI.Loader.shared;
+
+app.stage.addChild(cont);
 
 sharedLoader.add('roads', 'assets/images/city-element-top-view-set/roads_flat.json');
 sharedLoader.add('cars', 'assets/images/police-taxi-cars/cars_top.json');
 sharedLoader.add('police', 'assets/images/police-infographic-set-with-crime-evidence-arrest-justice-jail-icons-vector-illustration/police.json');
 
-sharedLoader.load((loader, resources) => {
+sharedLoader.load(setup);
+
+/**
+ * generate roads map or another map
+ * @param  {} startX
+ * @param  {} startY
+ * @param  {} max
+ * @param  {} sprites
+ * @param  {} map
+ */
+function addGround(startX, startY, max, sprites, map) {
+  for (let y = 0; y < map.height; y++) {
+    for (let x = 0; x < map.width; x++) {
+      const tile = map.tiles[y * map.width + x];
+      if (tile < max) {
+        const spr = _.cloneDeep(sprites[tile]);
+        spr.position.set(startX + (x * map.tileSize), startY + (y * map.tileSize));
+        cont.addChild(spr);
+      }
+    }
+  }
+}
+
+function setup(loader, resources) {
   const area = new PIXI.Graphics();
   area.beginFill(0xB1D1D4);
   area.lineStyle(1, 0x000000);
@@ -65,11 +102,27 @@ sharedLoader.load((loader, resources) => {
   // policeman.anchor.set(0.5);
   // cont.addChild(policeman);
 
+  const groundSprite = [];
+
+  for (let i = 0; i < 4; i++) {
+    const turnSprite = new PIXI.Sprite(resources.roads.textures.turn);
+    turnSprite.anchor.set(0.5);
+    turnSprite.rotation = (Math.PI * i) / 2;
+    groundSprite.push(turnSprite);
+  }
+
+  for (let i = 0; i < 4; i++) {
+    const road1 = new PIXI.Sprite(resources.roads.textures.road1);
+    road1.anchor.set(0.5);
+    road1.rotation = (Math.PI * i) / 2;
+    groundSprite.push(road1);
+  }
+
+  addGround(30, 45, 8, groundSprite, groundMap);
 
   // const p1 = new PIXI.Sprite(resources.roads.textures.road1);
   // p1.position.set(app.renderer.width / 2, app.renderer.height / 2);
   // p1.anchor.set(0.5);
-
   // cont.addChild(p1);
 
   // const p2 = new PIXI.Sprite(resources.roads.textures.turn);
@@ -94,4 +147,4 @@ sharedLoader.load((loader, resources) => {
   //   .to({ y: ca1.y - 300 }, 1000)
   //   .easing(Easing.Quadratic.Out)
   //   .start();
-});
+}

@@ -20,3 +20,4 @@ rules:
     - 2
     - allowed:
       - "*.css"
+  no-plusplus:  [2, { allowForLoopAfterthoughts: true }]
