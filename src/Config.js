@@ -11,5 +11,9 @@ export const SOUNDS = [
   'emergency_police_car_drive_fast_with_sirens_internal.mp3',
 ];
 export const FONTS = [
-  'christopher_done/Christopher Done.ttf',
+  {
+    path: 'christopher_done/',
+    name: 'Christopher Done',
+    url: 'Christopher Done.ttf',
+  },
 ];

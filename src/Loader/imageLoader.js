@@ -8,7 +8,6 @@ export default function addImages(images) {
   _.forEach(images, (image) => {
     const name = fileName(image);
 
-    console.log(`${name} - ${image}`);
     sharedLoader.add(name, `/assets/images/${image}`);
   });
 }

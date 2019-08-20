@@ -2,7 +2,9 @@ import * as PIXI from 'pixi.js';
 import * as _ from 'lodash';
 import { autoPlay } from 'es6-tween';
 import Loader from './Loader';
-import { PRELOADER_COMPLETE, LOADER_COMPLETE, LOADER_PROGRESS } from './Loader/events';
+import {
+  PRELOADER_COMPLETE, LOADER_COMPLETE, LOADER_PROGRESS, FONTLOADER_COMPLETE,
+} from './Loader/events';
 import eventEmitter from './eventEmitter';
 import {
   PRELOADER_ASSETS, IMAGES, SOUNDS, FONTS,
@@ -59,6 +61,10 @@ eventEmitter.on(LOADER_COMPLETE, () => {
 
 eventEmitter.on(LOADER_PROGRESS, (progess) => {
   console.log(`progress: ${progess}`);
+});
+
+eventEmitter.on(FONTLOADER_COMPLETE, (isActive) => {
+  console.log(`font loaded: ${isActive}`);
 });
 
 loader.load();
