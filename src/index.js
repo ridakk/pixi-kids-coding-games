@@ -32,7 +32,6 @@ const groundMap = {
     5, 8, 8, 7,
     0, 6, 6, 3,
   ],
-  tileSize: 39,
 };
 
 const app = new PIXI.Application({
@@ -83,7 +82,8 @@ function addGround(startX, startY, max, sprites, map, container) {
       const tile = map.tiles[y * map.width + x];
       if (tile < max) {
         const spr = _.cloneDeep(sprites[tile]);
-        spr.position.set(startX + (x * map.tileSize), startY + (y * map.tileSize));
+        spr.position.set(startX + (x * spr.width), startY + (y * spr.height));
+
         container.addChild(spr);
       }
     }
@@ -122,6 +122,7 @@ function setup() {
   for (let i = 0; i < 4; i++) {
     const turnSprite = new PIXI.Sprite(resources.roads_flat.textures.turn);
     turnSprite.anchor.set(0.5);
+    turnSprite.scale.set(2);
     turnSprite.rotation = (Math.PI * i) / 2;
     groundSprite.push(turnSprite);
   }
@@ -129,6 +130,7 @@ function setup() {
   for (let i = 0; i < 4; i++) {
     const road1 = new PIXI.Sprite(resources.roads_flat.textures.road1);
     road1.anchor.set(0.5);
+    road1.scale.set(2);
     road1.rotation = (Math.PI * i) / 2;
     groundSprite.push(road1);
   }
