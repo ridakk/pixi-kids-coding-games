@@ -97,7 +97,7 @@ function setup() {
   const child = level.getChildAt(start.index);
 
   const car = new PIXI.Sprite(resources.cars_top.textures.police);
-  car.scale.set(0.2);
+  car.scale.set(0.4);
   car.anchor.set(0.5);
   car.rotation = Math.PI * 90 / 180;
   car.position.set(child.x - car.width, child.y);

@@ -22,7 +22,7 @@ export default class Ground extends PIXI.Container {
         if (tile < max) {
           const spr = new Road({
             textureId: tile,
-            scale: [2, 2],
+            scale: [2.5, 2.5],
           });
           spr.position.set((xOffset + spr.width * 0.5) + (x * spr.width),
             (yOffest + spr.height * 0.5) + (y * spr.height));
