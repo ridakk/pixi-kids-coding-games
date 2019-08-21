@@ -1,4 +1,4 @@
-import eventEmitter from '../eventEmitter';
+import eventEmitter from '../utils/eventEmitter';
 
 export const PRELOADER_COMPLETE = 'PRELOADER_COMPLETE';
 export const LOADER_COMPLETE = 'LOADER_COMPLETE';

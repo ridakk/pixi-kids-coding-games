@@ -5,7 +5,7 @@ import Loader from './Loader';
 import {
   PRELOADER_COMPLETE, LOADER_COMPLETE, LOADER_PROGRESS, FONTLOADER_COMPLETE,
 } from './Loader/events';
-import eventEmitter from './eventEmitter';
+import eventEmitter from './utils/eventEmitter';
 import {
   PRELOADER_ASSETS, IMAGES, SOUNDS, FONTS,
 } from './Config';
