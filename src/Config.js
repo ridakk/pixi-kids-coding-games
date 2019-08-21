@@ -17,6 +17,32 @@ export const FONTS = [
     url: 'Christopher Done.ttf',
   },
 ];
+export const CONTAINERS = {
+  ACTIONS: {
+    name: 'actions',
+    position: [950, 45],
+    width: 300,
+    height: 300,
+  },
+  COMMANDS: {
+    name: 'commands',
+    position: [30, 605],
+    width: 890,
+    height: 70,
+  },
+  LOGO: {
+    name: 'logo',
+    position: [950, 375],
+    width: 300,
+    height: 300,
+  },
+  PLAYZONE: {
+    name: 'playzone',
+    position: [30, 45],
+    width: 890,
+    height: 550,
+  },
+};
 export const ROADS = {
   texture: 'roads_flat',
   PARTS: [{
