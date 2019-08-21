@@ -17,3 +17,31 @@ export const FONTS = [
     url: 'Christopher Done.ttf',
   },
 ];
+export const ROADS = {
+  texture: 'roads_flat',
+  PARTS: [{
+    texture: 'turn',
+    degree: 0,
+  }, {
+    texture: 'turn',
+    degree: 90,
+  }, {
+    texture: 'turn',
+    degree: 180,
+  }, {
+    texture: 'turn',
+    degree: 270,
+  }, {
+    texture: 'road1',
+    degree: 0,
+  }, {
+    texture: 'road1',
+    degree: 90,
+  }, {
+    texture: 'road1',
+    degree: 180,
+  }, {
+    texture: 'road1',
+    degree: 270,
+  }],
+};
