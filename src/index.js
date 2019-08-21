@@ -13,6 +13,7 @@ import Commands from './containers/Commands';
 import PlayZone from './containers/PlayZone';
 import Actions from './containers/Actions';
 import Logo from './containers/Logo';
+import Road from './componets/Road';
 
 import 'normalize.css';
 import './index.css';
@@ -70,19 +71,21 @@ loader.load();
 
 /**
  * generate roads map or another map
- * @param  {} startX
- * @param  {} startY
+ * @param  {} xOffset
+ * @param  {} yOffest
  * @param  {} max
- * @param  {} sprites
  * @param  {} map
  */
-function addGround(startX, startY, max, sprites, map, container) {
+function addGround(xOffset, yOffest, max, map, container) {
   for (let y = 0; y < map.height; y++) {
     for (let x = 0; x < map.width; x++) {
       const tile = map.tiles[y * map.width + x];
       if (tile < max) {
-        const spr = _.cloneDeep(sprites[tile]);
-        spr.position.set(startX + (x * spr.width), startY + (y * spr.height));
+        const spr = new Road({
+          textureId: tile,
+          scale: [2, 2],
+        });
+        spr.position.set((xOffset + spr.width * 0.5) + (x * spr.width), (yOffest + spr.height * 0.5) + (y * spr.height));
 
         container.addChild(spr);
       }
@@ -117,23 +120,5 @@ function setup() {
   policeman.position.set(300 - 100, 300 - policeman.height * 0.5);
   logo.addChild(policeman);
 
-  const groundSprite = [];
-
-  for (let i = 0; i < 4; i++) {
-    const turnSprite = new PIXI.Sprite(resources.roads_flat.textures.turn);
-    turnSprite.anchor.set(0.5);
-    turnSprite.scale.set(2);
-    turnSprite.rotation = (Math.PI * i) / 2;
-    groundSprite.push(turnSprite);
-  }
-
-  for (let i = 0; i < 4; i++) {
-    const road1 = new PIXI.Sprite(resources.roads_flat.textures.road1);
-    road1.anchor.set(0.5);
-    road1.scale.set(2);
-    road1.rotation = (Math.PI * i) / 2;
-    groundSprite.push(road1);
-  }
-
-  addGround(30, 45, 8, groundSprite, groundMap, playZone);
+  addGround(0, 0, 8, groundMap, playZone);
 }
