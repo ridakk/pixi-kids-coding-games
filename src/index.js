@@ -13,7 +13,7 @@ import Commands from './containers/Commands';
 import PlayZone from './containers/PlayZone';
 import Actions from './containers/Actions';
 import Logo from './containers/Logo';
-import Road from './componets/Road';
+import Ground from './componets/Ground';
 
 import 'normalize.css';
 import './index.css';
@@ -69,30 +69,6 @@ eventEmitter.on(FONTLOADER_COMPLETE, (isActive) => {
 
 loader.load();
 
-/**
- * generate roads map or another map
- * @param  {} xOffset
- * @param  {} yOffest
- * @param  {} max
- * @param  {} map
- */
-function addGround(xOffset, yOffest, max, map, container) {
-  for (let y = 0; y < map.height; y++) {
-    for (let x = 0; x < map.width; x++) {
-      const tile = map.tiles[y * map.width + x];
-      if (tile < max) {
-        const spr = new Road({
-          textureId: tile,
-          scale: [2, 2],
-        });
-        spr.position.set((xOffset + spr.width * 0.5) + (x * spr.width), (yOffest + spr.height * 0.5) + (y * spr.height));
-
-        container.addChild(spr);
-      }
-    }
-  }
-}
-
 function setup() {
   const { resources } = PIXI.Loader.shared;
 
@@ -120,5 +96,10 @@ function setup() {
   policeman.position.set(300 - 100, 300 - policeman.height * 0.5);
   logo.addChild(policeman);
 
-  addGround(0, 0, 8, groundMap, playZone);
+  const ground = new Ground(_.assign({}, groundMap, {
+    max: 8,
+    xOffset: 0,
+    yOffest: 0,
+    parent: playZone,
+  }));
 }
