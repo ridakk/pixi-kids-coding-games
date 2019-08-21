@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import * as _ from 'lodash';
-import { autoPlay } from 'es6-tween';
+import { Easing, Tween, autoPlay } from 'es6-tween';
+
 import Loader from './Loader';
 import {
   PRELOADER_COMPLETE, LOADER_COMPLETE, LOADER_PROGRESS, FONTLOADER_COMPLETE,
@@ -13,7 +14,9 @@ import Commands from './containers/Commands';
 import PlayZone from './containers/PlayZone';
 import Actions from './containers/Actions';
 import Logo from './containers/Logo';
-import Ground from './componets/Ground';
+import Level1 from './levels/Level1';
+import Level2 from './levels/Level2';
+import Level3 from './levels/Level3';
 
 import 'normalize.css';
 import './index.css';
@@ -22,18 +25,6 @@ autoPlay(true);
 
 PIXI.WebGLRenderer = PIXI.Renderer;
 window.__PIXI_INSPECTOR_GLOBAL_HOOK__ && window.__PIXI_INSPECTOR_GLOBAL_HOOK__.register({ PIXI });
-
-// groundMap
-const groundMap = {
-  width: 4,
-  height: 4,
-  tiles: [
-    1, 4, 4, 2,
-    5, 8, 8, 7,
-    5, 8, 8, 7,
-    0, 6, 6, 3,
-  ],
-};
 
 const app = new PIXI.Application({
   width: 1280,
@@ -96,10 +87,53 @@ function setup() {
   policeman.position.set(300 - 100, 300 - policeman.height * 0.5);
   logo.addChild(policeman);
 
-  const ground = new Ground(_.assign({}, groundMap, {
-    max: 8,
-    xOffset: 0,
-    yOffest: 0,
+  const level = new Level3({
     parent: playZone,
-  }));
+  });
+
+  // TODO: test code to chain tweens
+  const { points } = level.data;
+  const [start] = level.data.points;
+  const child = level.getChildAt(start.index);
+
+  const car = new PIXI.Sprite(resources.cars_top.textures.police);
+  car.scale.set(0.2);
+  car.anchor.set(0.5);
+  car.rotation = Math.PI * 90 / 180;
+  car.position.set(child.x - car.width, child.y);
+  level.addChild(car);
+
+  function loop(index) {
+    if (index >= points.length) {
+      return;
+    }
+
+    const point = points[index];
+
+    if (!_.isNil(point.index)) {
+      const nextChild = level.getChildAt(point.index);
+      new Tween(car)
+        .to({
+          x: point.end ? nextChild.x + car.width : nextChild.x,
+          y: nextChild.y,
+        }, 700)
+        .easing(Easing.Quartic.Out)
+        .on('complete', () => {
+          loop(index + 1);
+        })
+        .start();
+    } else if (!_.isNil(point.rotate)) {
+      new Tween(car)
+        .to({
+          rotation: car.rotation + Math.PI * point.rotate / 180,
+        }, 700)
+        .easing(Easing.Quartic.Out)
+        .on('complete', () => {
+          loop(index + 1);
+        })
+        .start();
+    }
+  }
+
+  loop(1);
 }
