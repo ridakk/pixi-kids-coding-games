@@ -68,11 +68,5 @@ export const ROADS = {
   }, {
     texture: 'road1',
     degree: 90,
-  }, {
-    texture: 'road1',
-    degree: 180,
-  }, {
-    texture: 'road1',
-    degree: 270,
   }],
 };
