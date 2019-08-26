@@ -20,5 +20,7 @@ export default class Container extends PIXI.Container {
     area.lineStyle(1, 0x000000);
     area.drawRect(0, 0, xScale * width, yScale * height);
     this.addChild(area);
+
+    window[this.name] = this;
   }
 }

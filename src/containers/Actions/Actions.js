@@ -1,8 +1,28 @@
+import { Easing, Tween } from 'es6-tween';
 import Container from '../Container';
 import { CONTAINERS } from '../../Config';
 import Draggable from '../../componets/Draggable';
 
 const { ACTIONS } = CONTAINERS;
+
+function fadeIn(item) {
+  item.alpha = 0;
+  item.scale.set(0);
+
+  new Tween(item)
+    .to({
+      alpha: 1,
+    }, 1500)
+    .easing(Easing.Quartic.Out)
+    .start();
+  new Tween(item.scale)
+    .to({
+      x: 1,
+      y: 1,
+    }, 1500)
+    .easing(Easing.Bounce.Out)
+    .start();
+}
 
 export default class Actions extends Container {
   constructor() {
@@ -59,5 +79,10 @@ export default class Actions extends Container {
       ],
     });
     this.addChild(down);
+
+    fadeIn(left);
+    fadeIn(right);
+    fadeIn(up);
+    fadeIn(down);
   }
 }

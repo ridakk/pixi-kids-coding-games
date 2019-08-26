@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import * as _ from 'lodash';
+import { Easing, Tween } from 'es6-tween';
 
 const { resources } = PIXI.Loader.shared;
 
@@ -22,9 +23,15 @@ export default class Draggable extends PIXI.Sprite {
     this.anchor.set(...anchor);
     this.rotation = Math.PI * degree / 180;
     this.position.set(...position);
+    this.original = {
+      x: position[0],
+      y: position[1],
+    };
 
     this.interactive = interactive;
     this.buttonMode = buttonMode;
+
+    window[this.name] = this;
 
     this
       // events for drag start
@@ -50,6 +57,24 @@ export default class Draggable extends PIXI.Sprite {
 
   onDragEnd() {
     this.dragging = false;
+
+    this.scale.set(0.5);
+    this.alpha = 0.1;
+    new Tween(this)
+      .to({
+        x: this.original.x,
+        y: this.original.y,
+        alpha: 1,
+      }, 1000)
+      .easing(Easing.Quartic.Out)
+      .start();
+    new Tween(this.scale)
+      .to({
+        x: 1,
+        y: 1,
+      }, 1500)
+      .easing(Easing.Bounce.Out)
+      .start();
 
     // set the interaction data to null
     this.data = null;
