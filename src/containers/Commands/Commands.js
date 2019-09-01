@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import get from 'lodash/get';
 import { Easing, Tween } from 'es6-tween';
 import Container from '../Container';
 import { CONTAINERS } from '../../Config';
@@ -40,8 +40,8 @@ export default class Commands extends Container {
         scale: [0.7, 0.7],
         degree: data.degree,
       });
-      const previousItemsX = _.get(this.items, `[${this.items.length - 1}].x`, 0);
-      const previousItemsWidth = _.get(this.items, `[${this.items.length - 1}].width`, 0);
+      const previousItemsX = get(this.items, `[${this.items.length - 1}].x`, 0);
+      const previousItemsWidth = get(this.items, `[${this.items.length - 1}].width`, 0);
       draggable.position.set(
         previousItemsX + previousItemsWidth * 0.5 + (draggable.width * 0.5) + 20,
         this.height * 0.5

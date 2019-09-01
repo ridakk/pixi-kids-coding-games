@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import assign from 'lodash/assign';
 import GROUND from '../../componets/Ground';
 
 const GROUND_MAP = {
@@ -38,7 +38,7 @@ export default class Level2 extends GROUND {
   constructor({
     parent = null,
   } = {}) {
-    super(_.assign({}, {
+    super(assign({}, {
       name: 'Level1',
     }, GROUND_MAP, {
       max: 8,

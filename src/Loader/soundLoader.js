@@ -1,11 +1,11 @@
 import * as PIXI from 'pixi.js';
-import * as _ from 'lodash';
+import forEach from 'lodash/forEach';
 import fileName from '../utils/fileName';
 
 const sharedLoader = PIXI.Loader.shared;
 
 export default function addSounds(sounds) {
-  _.forEach(sounds, (sound) => {
+  forEach(sounds, (sound) => {
     const name = fileName(sound);
 
     sharedLoader.add(name, `/assets/sounds/${sound}`);

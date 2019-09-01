@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import * as _ from 'lodash';
+import isNil from 'lodash/isNil';
 import { Easing, Tween, autoPlay } from 'es6-tween';
 
 import Loader from './Loader';
@@ -110,7 +110,7 @@ function setup() {
 
     const point = points[index];
 
-    if (!_.isNil(point.index)) {
+    if (!isNil(point.index)) {
       const nextChild = level.getChildAt(point.index);
       new Tween(car)
         .to({
@@ -122,7 +122,7 @@ function setup() {
           loop(index + 1);
         })
         .start();
-    } else if (!_.isNil(point.rotate)) {
+    } else if (!isNil(point.rotate)) {
       new Tween(car)
         .to({
           rotation: car.rotation + Math.PI * point.rotate / 180,

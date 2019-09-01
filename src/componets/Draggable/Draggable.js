@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import * as _ from 'lodash';
+import get from 'lodash/get';
 import { Easing, Tween } from 'es6-tween';
 import { emitDragEnd } from './events';
 
@@ -17,7 +17,7 @@ export default class Draggable extends PIXI.Sprite {
     interactive = true,
     buttonMode = true,
   } = {}) {
-    super(_.get(resources, `${resource}.textures.${texture}`, null));
+    super(get(resources, `${resource}.textures.${texture}`, null));
 
     this.name = name;
     this.resourceName = resource;
