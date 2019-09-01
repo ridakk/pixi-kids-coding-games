@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import * as _ from 'lodash';
 import { Easing, Tween } from 'es6-tween';
+import { emitDragEnd } from './events';
 
 const { resources } = PIXI.Loader.shared;
 
@@ -19,6 +20,9 @@ export default class Draggable extends PIXI.Sprite {
     super(_.get(resources, `${resource}.textures.${texture}`, null));
 
     this.name = name;
+    this.resourceName = resource;
+    this.textureName = texture;
+    this.degree = degree;
     this.scale.set(...scale);
     this.anchor.set(...anchor);
     this.rotation = Math.PI * degree / 180;
@@ -65,8 +69,8 @@ export default class Draggable extends PIXI.Sprite {
         x: this.original.x,
         y: this.original.y,
         alpha: 1,
-      }, 1000)
-      .easing(Easing.Quartic.Out)
+      }, 0)
+      .easing(Easing.Linear.None)
       .start();
     new Tween(this.scale)
       .to({
@@ -75,6 +79,17 @@ export default class Draggable extends PIXI.Sprite {
       }, 1500)
       .easing(Easing.Bounce.Out)
       .start();
+
+    const globalPosition = this.getGlobalPosition();
+
+    emitDragEnd({
+      name: this.name,
+      resource: this.resourceName,
+      texture: this.textureName,
+      degree: this.degree,
+      x: globalPosition.x,
+      y: globalPosition.y,
+    });
 
     // set the interaction data to null
     this.data = null;
