@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import 'pixi-sound'; // eslint-disable-line import/no-unassigned-import
 import isNil from 'lodash/isNil';
 import { Easing, Tween, autoPlay } from 'es6-tween';
 
@@ -103,8 +104,11 @@ function setup() {
   car.position.set(child.x - car.width, child.y);
   level.addChild(car);
 
+  resources.emergency_police_car_drive_fast_with_sirens_internal.sound.play();
+
   function loop(index) {
     if (index >= points.length) {
+      resources.emergency_police_car_drive_fast_with_sirens_internal.sound.stop();
       return;
     }
 
