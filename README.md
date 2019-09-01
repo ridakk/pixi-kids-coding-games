@@ -30,4 +30,4 @@
 
 ## Credits
 
-- [Designed by macrovector / Freepik](http://www.freepik.com)
+- Images [Designed by macrovector / Freepik](http://www.freepik.com)
