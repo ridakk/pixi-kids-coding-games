@@ -1,12 +1,6 @@
 import assign from 'lodash/assign';
 import GROUND from '../../componets/Ground';
 
-
-// tiles: [
-//   4, 2, 8, 8, 1, 4,
-//   8, 5, 8, 8, 5, 8,
-//   8, 0, 4, 4, 3, 8,
-// ],
 const GROUND_MAP = {
   width: 6,
   height: 3,
@@ -40,7 +34,7 @@ const GROUND_MAP = {
   }],
 };
 
-export default class Level2 extends GROUND {
+export default class Level3 extends GROUND {
   constructor({
     parent = null,
   } = {}) {
