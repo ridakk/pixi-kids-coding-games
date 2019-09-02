@@ -106,7 +106,7 @@ function setup() {
 
   resources.emergency_police_car_drive_fast_with_sirens_internal.sound.play();
 
-  function loop(index) {
+  function loop(index = 0) {
     if (index >= points.length) {
       resources.emergency_police_car_drive_fast_with_sirens_internal.sound.stop();
       return;
@@ -114,14 +114,14 @@ function setup() {
 
     const point = points[index];
 
-    if (!isNil(point.index)) {
+    if (!isNil(point.index) && point.start !== true) {
       const nextChild = level.getChildAt(point.index);
       new Tween(car)
         .to({
           x: point.end ? nextChild.x + car.width : nextChild.x,
           y: nextChild.y,
         }, 700)
-        .easing(Easing.Quartic.Out)
+        .easing(Easing.Quadratic.In)
         .on('complete', () => {
           loop(index + 1);
         })
@@ -131,13 +131,15 @@ function setup() {
         .to({
           rotation: car.rotation + Math.PI * point.rotate / 180,
         }, 700)
-        .easing(Easing.Quartic.Out)
+        .easing(Easing.Sinusoidal.InOut)
         .on('complete', () => {
           loop(index + 1);
         })
         .start();
+    } else {
+      loop(index + 1);
     }
   }
 
-  loop(1);
+  loop();
 }
