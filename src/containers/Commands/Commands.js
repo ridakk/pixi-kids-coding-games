@@ -1,4 +1,5 @@
 import get from 'lodash/get';
+import * as PIXI from 'pixi.js';
 import { Easing, Tween } from 'es6-tween';
 import Container from '../Container';
 import { CONTAINERS } from '../../Config';
@@ -20,9 +21,31 @@ export default class Commands extends Container {
       yEnd: globalPosition.y + this.height + 30,
     };
 
+    const [xScale, yScale] = COMMANDS.scale;
+    const playWidth = xScale * this.height;
+    const playHeight = yScale * this.height;
+    this.play = new PIXI.Graphics();
+    this.play.name = 'playBox';
+    this.play.interactive = true;
+    this.play.buttonMode = true;
+    this.play.beginFill(0x6acd75);
+    this.play.lineStyle(1.2, 0x000000);
+    this.play.drawRect(this.width - playWidth, 0, playWidth, playHeight);
+    this.addChild(this.play);
+
+    this.play
+      .on('mouseup', this.onPlayClickEnd.bind(this))
+      .on('mouseupoutside', this.onPlayClickEnd.bind(this))
+      .on('touchend', this.onPlayClickEnd.bind(this))
+      .on('touchendoutside', this.onPlayClickEnd.bind(this));
+
     this.items = [];
 
     eventEmitter.on(DRAG_END, this.onDragEnd, this);
+  }
+
+  onPlayClickEnd() {
+    console.log('play clicked');
   }
 
   onDragEnd(data) {
