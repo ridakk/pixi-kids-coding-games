@@ -32,6 +32,22 @@ const GROUND_MAP = {
     index: 3,
     end: true,
   }],
+  commands: [{
+    name: 'left',
+    pointIndexReached: 1,
+  }, {
+    name: 'down',
+    pointIndexReached: 3,
+  }, {
+    name: 'left',
+    pointIndexReached: 5,
+  }, {
+    name: 'up',
+    pointIndexReached: 7,
+  }, {
+    name: 'left',
+    pointIndexReached: 9,
+  }],
 };
 
 export default class Level2 extends GROUND {

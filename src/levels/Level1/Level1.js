@@ -14,6 +14,10 @@ const GROUND_MAP = {
     index: 5,
     end: true,
   }],
+  commands: [{
+    name: 'left',
+    pointIndexReached: 1,
+  }],
 };
 
 export default class Level1 extends GROUND {
@@ -28,7 +32,6 @@ export default class Level1 extends GROUND {
       yOffest: 0,
       parent,
     }));
-
 
     this.data = GROUND_MAP;
   }

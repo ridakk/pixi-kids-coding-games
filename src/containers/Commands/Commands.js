@@ -6,6 +6,7 @@ import { CONTAINERS } from '../../Config';
 import eventEmitter from '../../utils/eventEmitter';
 import Draggable from '../../componets/Draggable';
 import { DRAG_END } from '../../componets/Draggable/events';
+import { emitPlayClick } from './events';
 
 const { COMMANDS } = CONTAINERS;
 
@@ -45,7 +46,7 @@ export default class Commands extends Container {
   }
 
   onPlayClickEnd() {
-    console.log('play clicked');
+    emitPlayClick(this.items);
   }
 
   onDragEnd(data) {

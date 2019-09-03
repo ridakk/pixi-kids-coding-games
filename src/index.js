@@ -19,6 +19,8 @@ import Level1 from './levels/Level1';
 import Level2 from './levels/Level2';
 import Level3 from './levels/Level3';
 
+import { PLAY_CLICKED } from './containers/Commands/events';
+
 import 'normalize.css';
 import './index.css';
 
@@ -67,8 +69,8 @@ function setup() {
   const playZone = new PlayZone();
   cont.addChild(playZone);
 
-  const commands = new Commands();
-  cont.addChild(commands);
+  const commandsContainer = new Commands();
+  cont.addChild(commandsContainer);
 
   const actions = new Actions();
   cont.addChild(actions);
@@ -94,6 +96,7 @@ function setup() {
 
   // TODO: test code to chain tweens
   const { points } = level.data;
+  const { commands } = level.data;
   const [start] = level.data.points;
   const child = level.getChildAt(start.index);
 
@@ -104,15 +107,17 @@ function setup() {
   car.position.set(child.x - car.width, child.y);
   level.addChild(car);
 
-  resources.emergency_police_car_drive_fast_with_sirens_internal.sound.play();
+  let loopFrom = 0;
+  let loopTo = 0;
 
-  function loop(index = 0) {
-    if (index >= points.length) {
+
+  function loop() {
+    if (loopFrom >= points.length || loopFrom > loopTo) {
       resources.emergency_police_car_drive_fast_with_sirens_internal.sound.stop();
       return;
     }
 
-    const point = points[index];
+    const point = points[loopFrom];
 
     if (!isNil(point.index) && point.start !== true) {
       const nextChild = level.getChildAt(point.index);
@@ -120,10 +125,10 @@ function setup() {
         .to({
           x: point.end ? nextChild.x + car.width : nextChild.x,
           y: nextChild.y,
-        }, 700)
+        }, 1500)
         .easing(Easing.Quadratic.In)
         .on('complete', () => {
-          loop(index + 1);
+          loop(loopFrom++, loopTo);
         })
         .start();
     } else if (!isNil(point.rotate)) {
@@ -133,13 +138,25 @@ function setup() {
         }, 700)
         .easing(Easing.Sinusoidal.InOut)
         .on('complete', () => {
-          loop(index + 1);
+          loop(loopFrom++, loopTo);
         })
         .start();
     } else {
-      loop(index + 1);
+      loop(loopFrom++, loopTo);
     }
   }
 
-  loop();
+  eventEmitter.on(PLAY_CLICKED, (userCommands) => {
+    for (let i = 0, len = userCommands.length; i < len; i++) {
+      const userCommand = userCommands[i];
+      const command = commands[i];
+
+      if (command.name === userCommand.name) {
+        loopTo = command.pointIndexReached;
+      }
+    }
+
+    resources.emergency_police_car_drive_fast_with_sirens_internal.sound.play();
+    loop(loopFrom, loopTo);
+  });
 }
