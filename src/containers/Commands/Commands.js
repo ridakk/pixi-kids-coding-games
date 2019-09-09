@@ -6,6 +6,7 @@ import { CONTAINERS } from '../../Config';
 import eventEmitter from '../../utils/eventEmitter';
 import Draggable from '../../componets/Draggable';
 import { DRAG_END } from '../../componets/Draggable/events';
+import { LEVEL_COMPLETED } from '../Game/events';
 import { emitPlayClick } from './events';
 
 const { COMMANDS } = CONTAINERS;
@@ -43,6 +44,7 @@ export default class Commands extends Container {
     this.items = [];
 
     eventEmitter.on(DRAG_END, this.onDragEnd, this);
+    eventEmitter.on(LEVEL_COMPLETED, this.onLevelCompleted, this);
   }
 
   onPlayClickEnd() {
@@ -84,5 +86,15 @@ export default class Commands extends Container {
       this.items.push(draggable);
       this.addChild(draggable);
     }
+  }
+
+  onLevelCompleted() {
+    for (let i = 0, len = this.items.length; i < len; i++) {
+      const item = get(this.items, `[${i}]`);
+
+      this.removeChild(item);
+    }
+
+    this.items = [];
   }
 }
