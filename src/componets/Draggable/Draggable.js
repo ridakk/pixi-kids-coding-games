@@ -30,6 +30,8 @@ export default class Draggable extends PIXI.Sprite {
     this.original = {
       x: position[0],
       y: position[1],
+      scaleX: scale[0],
+      scaleY: scale[1],
     };
 
     this.interactive = interactive;
@@ -74,8 +76,8 @@ export default class Draggable extends PIXI.Sprite {
       .start();
     new Tween(this.scale)
       .to({
-        x: 1,
-        y: 1,
+        x: this.original.scaleX,
+        y: this.original.scaleY,
       }, 1500)
       .easing(Easing.Bounce.Out)
       .start();

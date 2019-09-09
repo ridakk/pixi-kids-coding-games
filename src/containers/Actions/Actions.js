@@ -1,4 +1,5 @@
 import { Easing, Tween } from 'es6-tween';
+import { GlowFilter } from '@pixi/filter-glow';
 import Container from '../Container';
 import { CONTAINERS } from '../../Config';
 import Draggable from '../../componets/Draggable';
@@ -42,6 +43,26 @@ export default class Actions extends Container {
         (0 * height) + (height * 0.5),
       ],
     });
+    // left.filters = [new GlowFilter(15, 2, 1, 0x4bec13, 0.5)];
+    // new Tween(left.scale)
+    //   .to({
+    //     x: 1.1,
+    //     y: 1.1,
+    //   }, 1500)
+    //   .repeat(Infinity)
+    //   .yoyo(true)
+    //   .easing(Easing.Bounce.In)
+    //   .start();
+
+    // new Tween(left.filters[0])
+    //   .to({
+    //     // distance: 50,
+    //     outerStrength: 4,
+    //   }, 1500)
+    //   .repeat(Infinity)
+    //   .yoyo(true)
+    //   .easing(Easing.Exponential.InOut)
+    //   .start();
     this.addChild(left);
 
     const right = new Draggable({

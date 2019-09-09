@@ -66,10 +66,11 @@ export default class Commands extends Container {
       });
       const previousItemsX = get(this.items, `[${this.items.length - 1}].x`, 0);
       const previousItemsWidth = get(this.items, `[${this.items.length - 1}].width`, 0);
-      draggable.position.set(
-        previousItemsX + previousItemsWidth * 0.5 + (draggable.width * 0.5) + 20,
-        this.height * 0.5
-      );
+      const initialX = previousItemsX + previousItemsWidth * 0.5 + (draggable.width * 0.5) + 20;
+      const initialY = this.height * 0.5;
+      draggable.position.set(initialX, initialY);
+      draggable.original.x = initialX;
+      draggable.original.y = initialY;
 
       draggable.scale.set(0);
       new Tween(draggable.scale)
