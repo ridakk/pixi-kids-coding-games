@@ -7,6 +7,9 @@ export const IMAGES = [
   'police-taxi-cars/cars_top.json',
   'traffic-stop-lights-signals/traffic_lights.json',
   'blue-arrows-symbols-pictograms-icons-set-isolated-vector-illustration/arrows.json',
+  'levels/level1.png',
+  'levels/level2.png',
+  'levels/level3.png',
 ];
 export const SOUNDS = [
   'emergency_police_car_drive_fast_with_sirens_internal.mp3',
@@ -18,6 +21,11 @@ export const FONTS = [
     url: 'Christopher Done.ttf',
   },
 ];
+export const PREVIEW = {
+  numberOfItem: 6,
+  numberOfColoumns: 3,
+  containerOffset: 8,
+};
 export const CONTAINERS = {
   ACTIONS: {
     name: 'actions',

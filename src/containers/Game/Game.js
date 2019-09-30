@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import get from 'lodash/get';
+import set from 'lodash/set';
 import isNil from 'lodash/isNil';
 import { Easing, Tween } from 'es6-tween';
 import eventEmitter from '../../utils/eventEmitter';
@@ -8,11 +9,12 @@ import { PLAY_CLICKED } from '../Commands/events';
 import PlayZone from '../PlayZone';
 import Actions from '../Actions';
 import Logo from '../Logo';
-import Level1 from '../../levels/Level1';
-import Level2 from '../../levels/Level2';
-import Level3 from '../../levels/Level3';
+import { Level1, Level1Preview } from '../../levels/Level1';
+import { Level2, Level2Preview } from '../../levels/Level2';
+import { Level3, Level3Preview } from '../../levels/Level3';
 import { LOADER_COMPLETE } from '../../Loader/events';
 import { emitLevelCompleted } from './events';
+import { PREVIEW_CLICKED } from '../../componets/Preview/events';
 
 const { resources } = PIXI.Loader.shared;
 
@@ -21,23 +23,29 @@ export default class Game extends PIXI.Container {
     super();
     this.name = 'game';
     this.levels = [Level1, Level2, Level3];
-    this.index = 0;
+    // this.index = 0;
     this.level = null;
     this.movingItem = null;
 
     eventEmitter.on(LOADER_COMPLETE, this.setup, this);
     eventEmitter.on(PLAY_CLICKED, this.playClicked, this);
+    eventEmitter.on(PREVIEW_CLICKED, this.previewClicked, this);
   }
 
-  setLevel(index) {
-    const Level = get(this.levels, `[${index}]`);
+  removeCurrentLevel() {
     const playZone = this.getChildAt(0);
 
     if (this.level) {
       playZone.removeChild(this.level);
     }
+  }
+
+  setLevel(index) {
+    const Level = get(this.levels, `[${index}]`);
+
+    this.removeCurrentLevel();
     this.level = new Level({
-      parent: playZone,
+      parent: this.getChildAt(0),
     });
 
     this.points = get(this.level, 'data.points');
@@ -57,10 +65,28 @@ export default class Game extends PIXI.Container {
 
     this.movingItem = new PIXI.Sprite(resources.cars_top.textures.police);
     this.movingItem.scale.set(0.4);
-    this.movingItem.anchor.set(0.5);
+    this.movingItem.anchor.set(0.1);
     this.movingItem.rotation = Math.PI * 90 / 180;
     this.movingItem.position.set(startingPoint.x - this.movingItem.width, startingPoint.y);
     this.level.addChild(this.movingItem);
+  }
+
+  togglePreviews(visible) {
+    this.getChildAt(0).children.map((child) => {
+      const childName = get(child, 'name', '');
+      if (childName && childName.indexOf('Preview') === 0) {
+        set(child, 'visible', visible);
+      }
+
+      return child;
+    });
+  }
+
+  previewClicked(previewIndex) {
+    this.togglePreviews(false);
+
+    this.setLevel(previewIndex - 1);
+    this.setMovingItem();
   }
 
   setup() {
@@ -69,8 +95,11 @@ export default class Game extends PIXI.Container {
     this.addChild(new Actions());
     this.addChild(new Logo());
 
-    this.setLevel(this.index);
-    this.setMovingItem();
+    const playZone = this.getChildAt(0);
+
+    playZone.addChild(new Level1Preview());
+    playZone.addChild(new Level2Preview());
+    playZone.addChild(new Level3Preview());
   }
 
   loop() {
@@ -78,10 +107,8 @@ export default class Game extends PIXI.Container {
       resources.emergency_police_car_drive_fast_with_sirens_internal.sound.stop();
 
       if (this.completed) {
-        this.index += 1;
-
-        this.setLevel(this.index);
-        this.setMovingItem();
+        this.removeCurrentLevel();
+        this.togglePreviews(true);
 
         emitLevelCompleted();
       }
