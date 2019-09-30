@@ -1,24 +1,6 @@
 import assign from 'lodash/assign';
 import GROUND from '../../componets/Ground';
-
-const GROUND_MAP = {
-  width: 6,
-  height: 1,
-  tiles: [
-    4, 4, 4, 4, 4, 4,
-  ],
-  points: [{
-    index: 0,
-    start: true,
-  }, {
-    index: 5,
-    end: true,
-  }],
-  commands: [{
-    name: 'left',
-    pointIndexReached: 1,
-  }],
-};
+import Data from './Data';
 
 export default class Level1 extends GROUND {
   constructor({
@@ -26,13 +8,13 @@ export default class Level1 extends GROUND {
   } = {}) {
     super(assign({}, {
       name: 'Level1',
-    }, GROUND_MAP, {
+    }, Data, {
       max: 8,
       xOffset: 0,
       yOffest: 0,
       parent,
     }));
 
-    this.data = GROUND_MAP;
+    this.data = Data;
   }
 }
