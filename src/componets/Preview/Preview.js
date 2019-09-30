@@ -23,9 +23,6 @@ export default class Preview extends PIXI.Sprite {
   } = {}) {
     super(get(resources, `${resource}.texture`, ''));
 
-    // asd.scale.set(170 / asd.width);
-    // asd.position.set(178 / 2 + (178 * 0), 550 / 2);
-    // Math.ceil((index / numberOfColoumns) - 1)
     const xIndex = index - 1;
     const yIndex = Math.ceil(index / numberOfColoumns - 1);
 
