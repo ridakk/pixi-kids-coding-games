@@ -65,7 +65,7 @@ export default class Game extends PIXI.Container {
 
     this.movingItem = new PIXI.Sprite(resources.cars_top.textures.police);
     this.movingItem.scale.set(0.4);
-    this.movingItem.anchor.set(0.1);
+    this.movingItem.anchor.set(0.5);
     this.movingItem.rotation = Math.PI * 90 / 180;
     this.movingItem.position.set(startingPoint.x - this.movingItem.width, startingPoint.y);
     this.level.addChild(this.movingItem);
