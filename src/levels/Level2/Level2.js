@@ -7,7 +7,7 @@ export default class Level2 extends GROUND {
     parent = null,
   } = {}) {
     super(assign({}, {
-      name: 'Level1',
+      name: 'Level2',
     }, Data, {
       max: 8,
       xOffset: 0,
