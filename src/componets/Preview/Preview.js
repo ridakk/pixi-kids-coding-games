@@ -9,6 +9,7 @@ const { PLAYZONE } = CONTAINERS;
 const containerWidth = PLAYZONE.width;
 const containerHeight = PLAYZONE.height;
 const containerQuadrantHeight = containerHeight / 4;
+const containerHalfHeight = containerHeight / 2;
 
 const { containerOffset, numberOfColoumns } = PREVIEW;
 const previewContainerWidth = (containerWidth / numberOfColoumns);
@@ -23,8 +24,8 @@ export default class Preview extends PIXI.Sprite {
   } = {}) {
     super(get(resources, `${resource}.texture`, ''));
 
-    const xIndex = index - 1;
     const yIndex = Math.ceil(index / numberOfColoumns - 1);
+    const xIndex = index - (yIndex * numberOfColoumns) - 1;
 
     this.index = index;
     this.name = `Preview${index}`;
@@ -33,7 +34,7 @@ export default class Preview extends PIXI.Sprite {
     this.anchor.set(...anchor);
     this.scale.set(previewItemWidth / this.width);
     this.position.set(previewContainerHalfWidth + previewContainerWidth * xIndex,
-      containerQuadrantHeight + containerQuadrantHeight * yIndex);
+      containerQuadrantHeight + containerHalfHeight * yIndex);
 
     this
       .on('mouseup', this.onClickEnd.bind(this))

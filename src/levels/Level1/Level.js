@@ -2,12 +2,12 @@ import assign from 'lodash/assign';
 import GROUND from '../../componets/Ground';
 import Data from './Data';
 
-export default class Level3 extends GROUND {
+export default class Level extends GROUND {
   constructor({
     parent = null,
   } = {}) {
     super(assign({}, {
-      name: 'Level3',
+      name: 'Level1',
     }, Data, {
       max: 8,
       xOffset: 0,

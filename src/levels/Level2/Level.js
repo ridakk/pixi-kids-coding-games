@@ -2,7 +2,7 @@ import assign from 'lodash/assign';
 import GROUND from '../../componets/Ground';
 import Data from './Data';
 
-export default class Level2 extends GROUND {
+export default class Level extends GROUND {
   constructor({
     parent = null,
   } = {}) {

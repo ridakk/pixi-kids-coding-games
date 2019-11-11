@@ -1,9 +1,7 @@
-import Level3 from './Level3';
-import Level3Preview from './Preview';
-
-export default Level3;
+import Level from './Level';
+import Preview from './Preview';
 
 export {
-  Level3,
-  Level3Preview,
+  Level,
+  Preview,
 };
