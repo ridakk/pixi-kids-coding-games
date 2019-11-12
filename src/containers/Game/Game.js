@@ -24,7 +24,6 @@ export default class Game extends PIXI.Container {
     // this.index = 0;
     this.level = null;
     this.movingItem = null;
-    this.fireworks = new FireWorks();
 
     eventEmitter.on(LOADER_COMPLETE, this.setup, this);
     eventEmitter.on(PLAY_CLICKED, this.playClicked, this);
@@ -93,7 +92,6 @@ export default class Game extends PIXI.Container {
     this.addChild(new Commands());
     this.addChild(new Actions());
     this.addChild(new Logo());
-    this.addChild(this.fireworks);
 
     const playZone = this.getChildAt(0);
 
@@ -108,14 +106,19 @@ export default class Game extends PIXI.Container {
       resources.emergency_police_car_drive_fast_with_sirens_internal.sound.stop();
 
       if (this.completed) {
-        // this.removeCurrentLevel();
-        // this.togglePreviews(true);
+        const fireworks = new FireWorks();
+        this.addChild(fireworks);
+        fireworks.launchParticle();
+        fireworks.loop();
+        setTimeout(() => {
+          this.removeCurrentLevel();
+          this.togglePreviews(true);
 
+          fireworks.destroy();
+          this.removeChild(fireworks);
+        }, 5000);
 
-        this.fireworks.launchParticle();
-        this.fireworks.loop();
-
-        // emitLevelCompleted();
+        emitLevelCompleted(this.level.name);
       }
       return;
     }

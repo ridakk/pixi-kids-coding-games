@@ -18,7 +18,7 @@ export default class FireWorks extends PIXI.Container {
   }
 
   explode(position, scale) {
-    const steps = 8 + Math.round(Math.random() * 6);
+    const steps = random(4, 8);
     const radius = 2 + Math.random() * 4;
     for (let i = 0; i < steps; i++) {
       // get velocity
@@ -84,5 +84,13 @@ export default class FireWorks extends PIXI.Container {
     for (let i = 0, l = this.particles.length; i < l; i++) {
       this.particles[i].update();
     }
+  }
+
+  destroy() {
+    for (let i = 0, l = this.particles.length; i < l; i++) {
+      this.particles[i].emitter.destroy();
+    }
+
+    this.particles = [];
   }
 }

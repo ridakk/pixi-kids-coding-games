@@ -7,14 +7,16 @@ const height = window.innerHeight;
 const { resources } = PIXI.Loader.shared;
 
 class Particle {
-  constructor(scale, explodeFn) {
+  constructor(scale, explodeFn = () => {}) {
     this.container = new PIXI.Container();
-    this.emitter = new particles.Emitter(this.container, [resources.particle.texture], Object.assign({}, emitter, {
-      color: {
-        start: Math.floor(Math.random() * 16777215).toString(16),
-        end: Math.floor(Math.random() * 16777215).toString(16),
-      },
-    }));
+    this.emitter = new particles.Emitter(this.container,
+      [resources.particle.texture],
+      Object.assign({}, emitter, {
+        color: {
+          start: Math.floor(Math.random() * 16777215).toString(16),
+          end: Math.floor(Math.random() * 16777215).toString(16),
+        },
+      }));
     this.emitter.emit = true;
     this.scale = scale;
     this.container.scale.x = this.scale;
