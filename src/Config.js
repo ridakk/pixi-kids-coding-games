@@ -7,6 +7,7 @@ export const IMAGES = [
   'police-taxi-cars/cars_top.json',
   'traffic-stop-lights-signals/traffic_lights.json',
   'blue-arrows-symbols-pictograms-icons-set-isolated-vector-illustration/arrows.json',
+  'particle.png',
   'levels/level1.png',
   'levels/level2.png',
   'levels/level3.png',
@@ -14,6 +15,8 @@ export const IMAGES = [
 ];
 export const SOUNDS = [
   'emergency_police_car_drive_fast_with_sirens_internal.mp3',
+  '336008__rudmer-rotteveel__whistle-and-explosion-single-firework.wav',
+  '394174__morganpurkis__single-firework.wav',
 ];
 export const FONTS = [
   {

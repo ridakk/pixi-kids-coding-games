@@ -13,6 +13,7 @@ import levels from '../../levels';
 import { LOADER_COMPLETE } from '../../Loader/events';
 import { emitLevelCompleted } from './events';
 import { PREVIEW_CLICKED } from '../../componets/Preview/events';
+import FireWorks from '../FireWorks';
 
 const { resources } = PIXI.Loader.shared;
 
@@ -23,6 +24,7 @@ export default class Game extends PIXI.Container {
     // this.index = 0;
     this.level = null;
     this.movingItem = null;
+    this.fireworks = new FireWorks();
 
     eventEmitter.on(LOADER_COMPLETE, this.setup, this);
     eventEmitter.on(PLAY_CLICKED, this.playClicked, this);
@@ -91,6 +93,7 @@ export default class Game extends PIXI.Container {
     this.addChild(new Commands());
     this.addChild(new Actions());
     this.addChild(new Logo());
+    this.addChild(this.fireworks);
 
     const playZone = this.getChildAt(0);
 
@@ -105,10 +108,14 @@ export default class Game extends PIXI.Container {
       resources.emergency_police_car_drive_fast_with_sirens_internal.sound.stop();
 
       if (this.completed) {
-        this.removeCurrentLevel();
-        this.togglePreviews(true);
+        // this.removeCurrentLevel();
+        // this.togglePreviews(true);
 
-        emitLevelCompleted();
+
+        this.fireworks.launchParticle();
+        this.fireworks.loop();
+
+        // emitLevelCompleted();
       }
       return;
     }
