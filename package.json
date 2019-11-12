@@ -72,6 +72,7 @@
     "pixi-particles": "^4.2.0",
     "pixi-sound": "^3.0.3",
     "pixi.js": "^5.1.1",
+    "serve": "^11.2.0",
     "webfontloader": "^1.6.28"
   },
   "config": {
