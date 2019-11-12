@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "description": "2D coding games for kids with PIXI.js",
   "scripts": {
-    "start": "webpack-dev-server --config webpack.dev.js",
+    "start": "serve dist",
+    "dev": "webpack-dev-server --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "release": "standard-version",
     "lint": "eslint ."
