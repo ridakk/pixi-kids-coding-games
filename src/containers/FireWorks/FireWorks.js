@@ -2,9 +2,6 @@ import random from 'lodash/random';
 import Container from '../Container';
 import Particle from '../../componets/Particle';
 
-const width = window.innerWidth;
-const height = window.innerHeight;
-
 export default class FireWorks extends Container {
   constructor() {
     super({
@@ -76,8 +73,8 @@ export default class FireWorks extends Container {
       return;
     }
 
-    particle.setPosition({ x: Math.random() * width, y: height });
-    const speed = height * 0.01;
+    particle.setPosition({ x: Math.random() * window.innerWidth, y: window.innerHeight });
+    const speed = window.innerHeight * 0.01;
     particle.setVelocity({ x: -speed / 2 + Math.random() * speed, y: -speed + Math.random() * -1 });
     particle.toExplode = true;
 
