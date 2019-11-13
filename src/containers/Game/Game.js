@@ -136,37 +136,14 @@ export default class Game extends Container {
       resources.emergency_police_car_drive_fast_with_sirens_internal.sound.stop();
 
       if (this.completed) {
-        const popup = new Popup();
+        const popup = new Popup({
+          onClick: this.fireworksClicked.bind(this),
+        });
         const fireworks = new FireWorks();
         this.addChild(popup);
         this.addChild(fireworks);
         fireworks.launchParticle();
         fireworks.loop();
-        setTimeout(() => {
-          this.removeCurrentLevel();
-          this.togglePreviews(true);
-          this.getChildByName('note').changeCharacter('?');
-
-          new Tween(fireworks)
-            .to({
-              alpha: 0,
-            }, 1500)
-            .easing(Easing.Exponential.Out)
-            .on('complete', () => {
-              fireworks.destroy();
-              this.removeChild(fireworks);
-            })
-            .start();
-          new Tween(popup)
-            .to({
-              alpha: 0,
-            }, 1500)
-            .easing(Easing.Exponential.Out)
-            .on('complete', () => {
-              this.removeChild(popup);
-            })
-            .start();
-        }, 5000);
 
         emitLevelCompleted(this.level.name);
       }
@@ -203,6 +180,35 @@ export default class Game extends Container {
       this.loopFrom += 1;
       this.loop(this.loopFrom, this.loopTo);
     }
+  }
+
+  fireworksClicked() {
+    this.removeCurrentLevel();
+    this.togglePreviews(true);
+    this.getChildByName('note').changeCharacter('?');
+
+    const fireworks = this.getChildByName('FireWorksContainer');
+    const popup = this.getChildByName('PopupContainer');
+
+    new Tween(fireworks)
+      .to({
+        alpha: 0,
+      }, 500)
+      .easing(Easing.Exponential.Out)
+      .on('complete', () => {
+        fireworks.destroy();
+        this.removeChild(fireworks);
+      })
+      .start();
+    new Tween(popup)
+      .to({
+        alpha: 0,
+      }, 1000)
+      .easing(Easing.Exponential.Out)
+      .on('complete', () => {
+        this.removeChild(popup);
+      })
+      .start();
   }
 
   playClicked(userCommands) {

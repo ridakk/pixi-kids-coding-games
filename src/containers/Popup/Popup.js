@@ -4,11 +4,16 @@ import Container from '../Container';
 const { resources } = PIXI.Loader.shared;
 
 export default class Popup extends Container {
-  constructor() {
+  constructor({
+    onClick = () => {},
+  } = {}) {
     super({
       name: 'Popup',
       boundingBox: false,
     });
+
+    this.interactive = true;
+    this.buttonMode = true;
 
     const graphic = new PIXI.Graphics();
     graphic.clear();
@@ -69,5 +74,11 @@ export default class Popup extends Container {
     text2.anchor.set(0.5);
     text2.position.set(window.innerWidth * 0.5, window.innerHeight * 0.75);
     this.addChild(text2);
+
+    this
+      .on('mouseup', onClick)
+      .on('mouseupoutside', onClick)
+      .on('touchend', onClick)
+      .on('touchendoutside', onClick);
   }
 }
