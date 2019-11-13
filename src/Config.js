@@ -15,6 +15,9 @@ export const IMAGES = [
   'ribbons/ribbon3.png',
   'ribbons/ribbon4.png',
   'ribbons/ribbon5.png',
+  'sticky-notes/sticky_note1.png',
+  'sticky-notes/sticky_note2.png',
+  'sticky-notes/sticky_note3.png',
 ];
 export const SOUNDS = [
   'emergency_police_car_drive_fast_with_sirens_internal.mp3',
@@ -35,10 +38,10 @@ export const PREVIEW = {
 export const CONTAINERS = {
   ACTIONS: {
     name: 'actions',
-    position: [950, 45],
+    position: [950, 225],
     scale: [1, 1],
     width: 300,
-    height: 300,
+    height: 220,
   },
   COMMANDS: {
     name: 'commands',
@@ -49,10 +52,10 @@ export const CONTAINERS = {
   },
   LOGO: {
     name: 'logo',
-    position: [950, 375],
+    position: [950, 475],
     scale: [1, 1],
     width: 300,
-    height: 300,
+    height: 200,
   },
   PLAYZONE: {
     name: 'playzone',

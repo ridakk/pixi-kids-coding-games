@@ -6,6 +6,7 @@ import { Easing, Tween } from 'es6-tween';
 import eventEmitter from '../../utils/eventEmitter';
 import Commands from '../Commands';
 import { PLAY_CLICKED } from '../Commands/events';
+import Container from '../Container';
 import PlayZone from '../PlayZone';
 import Actions from '../Actions';
 import Logo from '../Logo';
@@ -15,14 +16,17 @@ import { emitLevelCompleted } from './events';
 import { PREVIEW_CLICKED } from '../../componets/Preview/events';
 import FireWorks from '../FireWorks';
 import Popup from '../Popup';
+import Info from '../Info';
 
 const { resources } = PIXI.Loader.shared;
 
-export default class Game extends PIXI.Container {
+export default class Game extends Container {
   constructor() {
-    super();
-    this.name = 'game';
-    // this.index = 0;
+    super({
+      name: 'Game',
+      boundingBox: false,
+    });
+
     this.level = null;
     this.movingItem = null;
 
@@ -94,12 +98,80 @@ export default class Game extends PIXI.Container {
     this.addChild(new Actions());
     this.addChild(new Logo());
 
-    const playZone = this.getChildAt(0);
+    // const note2 = new PIXI.Sprite(resources.sticky_note1.texture);
+    // note2.anchor.set(0);
+    // note2.position.set(945, 45);
+    // this.addChild(note2);
+
+    // const style2 = new PIXI.TextStyle({
+    //   align: 'center',
+    //   breakWords: true,
+    //   dropShadow: true,
+    //   fill: [
+    //     '#0433ff',
+    //     '#00f900',
+    //   ],
+    //   fillGradientStops: [
+    //     0.6,
+    //     0.2,
+    //   ],
+    //   fontFamily: 'Christopher Done',
+    //   fontSize: 240,
+    //   fontWeight: 100,
+    //   letterSpacing: 0,
+    //   lineHeight: 30,
+    //   stroke: '#0433ff',
+    //   strokeThickness: 1,
+    //   wordWrap: true,
+    //   wordWrapWidth: 10,
+    // });
+    // const text2 = new PIXI.Text('---', style2);
+    // text2.anchor.set(0.5);
+    // text2.position.set(note2.width * 0.5, note2.height * 0.25);
+    // note2.addChild(text2);
+
+    const note = new PIXI.Sprite(resources.sticky_note1.texture);
+    note.anchor.set(0);
+    note.position.set(1095, 45);
+    this.addChild(note);
+
+    const style = new PIXI.TextStyle({
+      dropShadow: true,
+      fill: [
+        '#0096ff',
+        '#00f900',
+      ],
+      fontFamily: 'Christopher Done',
+      fontSize: 120,
+      fontWeight: 600,
+      stroke: '#0433ff',
+      strokeThickness: 2,
+    });
+    const text = new PIXI.Text('?', style);
+    text.anchor.set(0.5);
+    text.position.set(note.width * 0.5, note.height * 0.5);
+    note.addChild(text);
+
+    note.interactive = true;
+    note.buttonMode = true;
+    note
+      .on('mouseup', this.noteClicked.bind(this))
+      .on('mouseupoutside', this.noteClicked.bind(this))
+      .on('touchend', this.noteClicked.bind(this))
+      .on('touchendoutside', this.noteClicked.bind(this));
+
+    this.addChild(new Info());
+
+    const playZone = this.getChildByName('playzoneContainer');
 
     for (let i = 0, len = levels.length; i < len; i++) {
       const Preview = get(levels, `[${i}].Preview`);
       playZone.addChild(new Preview());
     }
+  }
+
+  noteClicked() {
+    this.getChildByName('infoContainer').show();
   }
 
   loop() {

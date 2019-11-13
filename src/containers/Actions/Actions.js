@@ -31,7 +31,7 @@ export default class Actions extends Container {
 
     const [xScale, yScale] = ACTIONS.scale;
     const width = xScale * ACTIONS.width / 2;
-    const height = yScale * ACTIONS.height / 3;
+    const height = yScale * ACTIONS.height / 2;
 
     const left = new Draggable({
       name: 'left',
