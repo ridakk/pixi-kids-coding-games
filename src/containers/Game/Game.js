@@ -145,6 +145,7 @@ export default class Game extends Container {
         setTimeout(() => {
           this.removeCurrentLevel();
           this.togglePreviews(true);
+          this.getChildByName('note').changeCharacter('?');
 
           new Tween(fireworks)
             .to({
