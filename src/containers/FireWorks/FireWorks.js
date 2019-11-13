@@ -13,6 +13,8 @@ export default class FireWorks extends Container {
     });
 
     this.particles = [];
+    this.animationFrameId = null;
+    this.launchParticleTimer = null;
 
     this.loop = this.loop.bind(this);
     this.getParticle = this.getParticle.bind(this);
@@ -69,7 +71,8 @@ export default class FireWorks extends Container {
   launchParticle() {
     const particle = this.getParticle(random(0.5, 1.0));
     if (!particle) {
-      setTimeout(this.launchParticle, 200 + Math.random() * 600);
+      clearTimeout(this.launchParticleTimer);
+      this.launchParticleTimer = setTimeout(this.launchParticle, 200 + Math.random() * 600);
       return;
     }
 
@@ -79,11 +82,12 @@ export default class FireWorks extends Container {
     particle.toExplode = true;
 
     // launch a new particle
-    setTimeout(this.launchParticle, 200 + Math.random() * 600);
+    clearTimeout(this.launchParticleTimer);
+    this.launchParticleTimer = setTimeout(this.launchParticle, 200 + Math.random() * 600);
   }
 
   loop() {
-    requestAnimationFrame(this.loop);
+    this.animationFrameId = requestAnimationFrame(this.loop);
     for (let i = 0, l = this.particles.length; i < l; i++) {
       this.particles[i].update();
     }
@@ -94,6 +98,8 @@ export default class FireWorks extends Container {
       this.particles[i].emitter.destroy();
     }
 
-    this.particles = [];
+    clearTimeout(this.launchParticleTimer);
+    cancelAnimationFrame(this.animationFrameId);
+    this.particles.splice(0, this.particles.length);
   }
 }
