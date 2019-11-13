@@ -10,6 +10,11 @@ export const IMAGES = [
   'levels/level2.png',
   'levels/level3.png',
   'levels/level4.png',
+  'ribbons/ribbon1.png',
+  'ribbons/ribbon2.png',
+  'ribbons/ribbon3.png',
+  'ribbons/ribbon4.png',
+  'ribbons/ribbon5.png',
 ];
 export const SOUNDS = [
   'emergency_police_car_drive_fast_with_sirens_internal.mp3',

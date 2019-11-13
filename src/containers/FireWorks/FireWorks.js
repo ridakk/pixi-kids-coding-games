@@ -1,13 +1,16 @@
-import * as PIXI from 'pixi.js';
 import random from 'lodash/random';
+import Container from '../Container';
 import Particle from '../../componets/Particle';
 
 const width = window.innerWidth;
 const height = window.innerHeight;
 
-export default class FireWorks extends PIXI.Container {
+export default class FireWorks extends Container {
   constructor() {
-    super();
+    super({
+      name: 'FireWorks',
+      boundingBox: false,
+    });
 
     this.particles = [];
 

@@ -7,6 +7,7 @@ export default class Container extends PIXI.Container {
     scale = [1, 1],
     width = 0,
     height = 0,
+    boundingBox = true,
   } = {}) {
     super();
 
@@ -15,11 +16,15 @@ export default class Container extends PIXI.Container {
     this.scale.set(...scale);
 
     const [xScale, yScale] = scale;
-    const area = new PIXI.Graphics();
-    area.beginFill(0xB1D1D4);
-    area.lineStyle(1, 0x000000);
-    area.drawRect(0, 0, xScale * width, yScale * height);
-    this.addChild(area);
+
+    if (boundingBox) {
+      const area = new PIXI.Graphics();
+      area.beginFill(0xB1D1D4);
+      area.lineStyle(1, 0x000000);
+      area.drawRect(0, 0, xScale * width, yScale * height);
+      this.addChild(area);
+    }
+
 
     window[this.name] = this;
   }

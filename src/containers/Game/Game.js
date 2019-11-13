@@ -14,6 +14,7 @@ import { LOADER_COMPLETE } from '../../Loader/events';
 import { emitLevelCompleted } from './events';
 import { PREVIEW_CLICKED } from '../../componets/Preview/events';
 import FireWorks from '../FireWorks';
+import Popup from '../Popup';
 
 const { resources } = PIXI.Loader.shared;
 
@@ -106,7 +107,9 @@ export default class Game extends PIXI.Container {
       resources.emergency_police_car_drive_fast_with_sirens_internal.sound.stop();
 
       if (this.completed) {
+        const popup = new Popup();
         const fireworks = new FireWorks();
+        this.addChild(popup);
         this.addChild(fireworks);
         fireworks.launchParticle();
         fireworks.loop();
@@ -114,8 +117,25 @@ export default class Game extends PIXI.Container {
           this.removeCurrentLevel();
           this.togglePreviews(true);
 
-          fireworks.destroy();
-          this.removeChild(fireworks);
+          new Tween(fireworks)
+            .to({
+              alpha: 0,
+            }, 1500)
+            .easing(Easing.Exponential.Out)
+            .on('complete', () => {
+              fireworks.destroy();
+              this.removeChild(fireworks);
+            })
+            .start();
+          new Tween(popup)
+            .to({
+              alpha: 0,
+            }, 1500)
+            .easing(Easing.Exponential.Out)
+            .on('complete', () => {
+              this.removeChild(popup);
+            })
+            .start();
         }, 5000);
 
         emitLevelCompleted(this.level.name);

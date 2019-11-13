@@ -24,6 +24,8 @@ const app = new PIXI.Application({
   height: 720,
   sharedTicker: true,
   sharedLoader: true,
+  antialias: false,
+  transparent: false,
   backgroundColor: 0xB1D1D4,
 });
 
