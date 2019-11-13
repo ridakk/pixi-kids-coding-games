@@ -14,6 +14,7 @@ import levels from '../../levels';
 import { LOADER_COMPLETE } from '../../Loader/events';
 import { emitLevelCompleted } from './events';
 import { PREVIEW_CLICKED } from '../../componets/Preview/events';
+import Note from '../../componets/Note';
 import FireWorks from '../FireWorks';
 import Popup from '../Popup';
 import Info from '../Info';
@@ -90,6 +91,8 @@ export default class Game extends Container {
 
     this.setLevel(previewIndex - 1);
     this.setMovingItem();
+
+    this.getChildByName('note').changeCharacter('x');
   }
 
   setup() {
@@ -98,67 +101,11 @@ export default class Game extends Container {
     this.addChild(new Actions());
     this.addChild(new Logo());
 
-    // const note2 = new PIXI.Sprite(resources.sticky_note1.texture);
-    // note2.anchor.set(0);
-    // note2.position.set(945, 45);
-    // this.addChild(note2);
-
-    // const style2 = new PIXI.TextStyle({
-    //   align: 'center',
-    //   breakWords: true,
-    //   dropShadow: true,
-    //   fill: [
-    //     '#0433ff',
-    //     '#00f900',
-    //   ],
-    //   fillGradientStops: [
-    //     0.6,
-    //     0.2,
-    //   ],
-    //   fontFamily: 'Christopher Done',
-    //   fontSize: 240,
-    //   fontWeight: 100,
-    //   letterSpacing: 0,
-    //   lineHeight: 30,
-    //   stroke: '#0433ff',
-    //   strokeThickness: 1,
-    //   wordWrap: true,
-    //   wordWrapWidth: 10,
-    // });
-    // const text2 = new PIXI.Text('---', style2);
-    // text2.anchor.set(0.5);
-    // text2.position.set(note2.width * 0.5, note2.height * 0.25);
-    // note2.addChild(text2);
-
-    const note = new PIXI.Sprite(resources.sticky_note1.texture);
-    note.anchor.set(0);
-    note.position.set(1095, 45);
-    this.addChild(note);
-
-    const style = new PIXI.TextStyle({
-      dropShadow: true,
-      fill: [
-        '#0096ff',
-        '#00f900',
-      ],
-      fontFamily: 'Christopher Done',
-      fontSize: 120,
-      fontWeight: 600,
-      stroke: '#0433ff',
-      strokeThickness: 2,
+    const note = new Note({
+      character: '?',
+      onClick: this.noteClicked.bind(this),
     });
-    const text = new PIXI.Text('?', style);
-    text.anchor.set(0.5);
-    text.position.set(note.width * 0.5, note.height * 0.5);
-    note.addChild(text);
-
-    note.interactive = true;
-    note.buttonMode = true;
-    note
-      .on('mouseup', this.noteClicked.bind(this))
-      .on('mouseupoutside', this.noteClicked.bind(this))
-      .on('touchend', this.noteClicked.bind(this))
-      .on('touchendoutside', this.noteClicked.bind(this));
+    this.addChild(note);
 
     this.addChild(new Info());
 
@@ -170,8 +117,18 @@ export default class Game extends Container {
     }
   }
 
-  noteClicked() {
-    this.getChildByName('infoContainer').show();
+  noteClicked(character) {
+    switch (character) {
+    case '?':
+      this.getChildByName('infoContainer').show();
+      break;
+    case 'x':
+      this.removeCurrentLevel();
+      this.togglePreviews(true);
+      this.getChildByName('note').changeCharacter('?');
+      break;
+    default:
+    }
   }
 
   loop() {
