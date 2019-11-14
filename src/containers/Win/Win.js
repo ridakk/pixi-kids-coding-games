@@ -1,14 +1,15 @@
 import * as PIXI from 'pixi.js';
 import Container from '../Container';
+import { WIDTH, HEIGHT } from '../../Config';
 
 const { resources } = PIXI.Loader.shared;
 
-export default class Popup extends Container {
+export default class Win extends Container {
   constructor({
     onClick = () => {},
   } = {}) {
     super({
-      name: 'Popup',
+      name: 'Win',
       boundingBox: false,
     });
 
@@ -19,12 +20,12 @@ export default class Popup extends Container {
     graphic.clear();
     graphic.beginFill(0x000000, 0.4);
 
-    graphic.drawRect(0, 0, window.innerWidth, window.innerHeight);
+    graphic.drawRect(0, 0, WIDTH, HEIGHT);
     this.addChild(graphic);
 
     const badge = new PIXI.Sprite(resources.badge.texture);
     badge.anchor.set(0.5);
-    badge.position.set(window.innerWidth * 0.5, window.innerHeight * 0.25);
+    badge.position.set(WIDTH * 0.5, HEIGHT * 0.25);
     this.addChild(badge);
 
     const ribbon = new PIXI.Sprite(resources.ribbon1.texture);
@@ -37,7 +38,7 @@ export default class Popup extends Container {
     const ribbon2 = new PIXI.Sprite(resources.ribbon1.texture);
     ribbon2.anchor.set(0.5);
     ribbon2.rotation = Math.PI * 45 / 180;
-    ribbon2.position.set(window.innerWidth - ribbon2.getBounds().width * 0.5,
+    ribbon2.position.set(WIDTH - ribbon2.getBounds().width * 0.5,
       0 + ribbon2.getBounds().height * 0.5);
     this.addChild(ribbon2);
 
@@ -55,7 +56,7 @@ export default class Popup extends Container {
     });
     const text = new PIXI.Text('Level Completed', style);
     text.anchor.set(0.5);
-    text.position.set(window.innerWidth * 0.5, window.innerHeight * 0.5);
+    text.position.set(WIDTH * 0.5, HEIGHT * 0.5);
     this.addChild(text);
 
     const style2 = new PIXI.TextStyle({
@@ -72,7 +73,7 @@ export default class Popup extends Container {
     });
     const text2 = new PIXI.Text('Click Anywhere to Continue', style2);
     text2.anchor.set(0.5);
-    text2.position.set(window.innerWidth * 0.5, window.innerHeight * 0.75);
+    text2.position.set(WIDTH * 0.5, HEIGHT * 0.75);
     this.addChild(text2);
 
     this

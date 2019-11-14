@@ -35,6 +35,8 @@ export const PREVIEW = {
   numberOfColoumns: 3,
   containerOffset: 8,
 };
+export const WIDTH = 1280;
+export const HEIGHT = 720;
 export const CONTAINERS = {
   ACTIONS: {
     name: 'actions',

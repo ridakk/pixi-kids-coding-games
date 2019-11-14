@@ -1,9 +1,10 @@
 import * as PIXI from 'pixi.js';
 import Container from '../Container';
+import { WIDTH, HEIGHT } from '../../Config';
 
 const { resources } = PIXI.Loader.shared;
 
-export default class Popup extends Container {
+export default class Info extends Container {
   constructor() {
     super({
       name: 'info',
@@ -18,7 +19,7 @@ export default class Popup extends Container {
     graphic.clear();
     graphic.beginFill(0x000000, 0.4);
 
-    graphic.drawRect(0, 0, window.innerWidth, window.innerHeight);
+    graphic.drawRect(0, 0, WIDTH, HEIGHT);
     this.addChild(graphic);
 
     const ribbon = new PIXI.Sprite(resources.ribbon1.texture);
@@ -31,7 +32,7 @@ export default class Popup extends Container {
     const ribbon2 = new PIXI.Sprite(resources.ribbon1.texture);
     ribbon2.anchor.set(0.5);
     ribbon2.rotation = Math.PI * 45 / 180;
-    ribbon2.position.set(window.innerWidth - ribbon2.getBounds().width * 0.5,
+    ribbon2.position.set(WIDTH - ribbon2.getBounds().width * 0.5,
       0 + ribbon2.getBounds().height * 0.5);
     this.addChild(ribbon2);
 
@@ -51,7 +52,7 @@ export default class Popup extends Container {
     const text = new PIXI.Text('Made with PIXI.js and ♥\n\n\nCredits\n[Images created by macrovector / Freepik]\n(http://www.freepik.com)', style);
 
     text.anchor.set(0.5);
-    text.position.set(window.innerWidth * 0.5, window.innerHeight * 0.5);
+    text.position.set(WIDTH * 0.5, HEIGHT * 0.5);
     this.addChild(text);
 
     this

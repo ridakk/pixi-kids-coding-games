@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import * as particles from 'pixi-particles';
 import emitter from './emitter';
+import { HEIGHT } from '../../Config';
 
 const gravity = 0.03;
 const { resources } = PIXI.Loader.shared;
@@ -55,7 +56,7 @@ class Particle {
     this.velocity.y += gravity;
     if (this.toExplode && !this.exploded) {
       // explode
-      if (this.container.position.y < window.innerHeight * this.explodeHeight) {
+      if (this.container.position.y < HEIGHT * this.explodeHeight) {
         this.container.alpha = 0;
         this.exploded = true;
 

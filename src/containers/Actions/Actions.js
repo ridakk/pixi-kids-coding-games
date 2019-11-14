@@ -1,5 +1,4 @@
 import { Easing, Tween } from 'es6-tween';
-import { GlowFilter } from '@pixi/filter-glow';
 import Container from '../Container';
 import { CONTAINERS } from '../../Config';
 import Draggable from '../../componets/Draggable';

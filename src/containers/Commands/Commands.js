@@ -15,13 +15,6 @@ export default class Commands extends Container {
   constructor() {
     super(COMMANDS);
 
-    const globalPosition = this.getGlobalPosition();
-    this.dropZone = {
-      xStart: globalPosition.x - 30,
-      yStart: globalPosition.y - 30,
-      xEnd: globalPosition.x + this.width + 30,
-      yEnd: globalPosition.y + this.height + 30,
-    };
 
     const [xScale, yScale] = COMMANDS.scale;
     const playWidth = xScale * this.height;
@@ -52,10 +45,16 @@ export default class Commands extends Container {
   }
 
   onDragEnd(data) {
-    const {
-      xStart, xEnd, yStart, yEnd,
-    } = this.dropZone;
+    const globalPosition = this.getGlobalPosition();
+
+    const xStart = globalPosition.x - 30;
+    const yStart = globalPosition.y - 30;
+    const xEnd = globalPosition.x + this.width + 30;
+    const yEnd = globalPosition.y + this.height + 30;
     const { x, y } = data;
+
+    console.log(`x: ${x} is between ${xStart} - ${xEnd}`);
+    console.log(`y: ${y} is between ${yStart} - ${yEnd}`);
 
     if (x >= xStart && x <= xEnd
       && y >= yStart && y <= yEnd) {

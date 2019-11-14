@@ -16,7 +16,7 @@ import { emitLevelCompleted } from './events';
 import { PREVIEW_CLICKED } from '../../componets/Preview/events';
 import Note from '../../componets/Note';
 import FireWorks from '../FireWorks';
-import Popup from '../Popup';
+import Win from '../Win';
 import Info from '../Info';
 
 const { resources } = PIXI.Loader.shared;
@@ -136,11 +136,11 @@ export default class Game extends Container {
       resources.emergency_police_car_drive_fast_with_sirens_internal.sound.stop();
 
       if (this.completed) {
-        const popup = new Popup({
+        const win = new Win({
           onClick: this.fireworksClicked.bind(this),
         });
         const fireworks = new FireWorks();
-        this.addChild(popup);
+        this.addChild(win);
         this.addChild(fireworks);
         fireworks.launchParticle();
         fireworks.loop();
@@ -188,7 +188,7 @@ export default class Game extends Container {
     this.getChildByName('note').changeCharacter('?');
 
     const fireworks = this.getChildByName('FireWorksContainer');
-    const popup = this.getChildByName('PopupContainer');
+    const win = this.getChildByName('WinContainer');
 
     new Tween(fireworks)
       .to({
@@ -200,13 +200,13 @@ export default class Game extends Container {
         this.removeChild(fireworks);
       })
       .start();
-    new Tween(popup)
+    new Tween(win)
       .to({
         alpha: 0,
       }, 1000)
       .easing(Easing.Exponential.Out)
       .on('complete', () => {
-        this.removeChild(popup);
+        this.removeChild(win);
       })
       .start();
   }
