@@ -90,7 +90,7 @@ export default class FireWorks extends Container {
 
   destroy() {
     for (let i = 0, l = this.particles.length; i < l; i++) {
-      this.particles[i].emitter.destroy();
+      this.particles[i].container.destroy();
     }
 
     clearTimeout(this.launchParticleTimer);
