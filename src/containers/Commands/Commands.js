@@ -59,6 +59,10 @@ export default class Commands extends Container {
   }
 
   onDragEnd(data) {
+    if (this.itemIndex === 10) {
+      return;
+    }
+
     const globalPosition = this.getGlobalPosition();
 
     const xStart = globalPosition.x - 30;
