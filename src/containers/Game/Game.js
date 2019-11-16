@@ -11,7 +11,7 @@ import PlayZone from '../PlayZone';
 import Actions from '../Actions';
 import Logo from '../Logo';
 import levels from '../../levels';
-import { LOADER_COMPLETE } from '../../Loader/events';
+import { LOADING_COMPLETE } from '../Loading/events';
 import { emitLevelCompleted } from './events';
 import { PREVIEW_CLICKED } from '../../componets/Preview/events';
 import Note from '../../componets/Note';
@@ -31,7 +31,7 @@ export default class Game extends Container {
     this.level = null;
     this.movingItem = null;
 
-    eventEmitter.on(LOADER_COMPLETE, this.setup, this);
+    eventEmitter.on(LOADING_COMPLETE, this.setup, this);
     eventEmitter.on(PLAY_CLICKED, this.playClicked, this);
     eventEmitter.on(PREVIEW_CLICKED, this.previewClicked, this);
   }

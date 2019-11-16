@@ -1,13 +1,12 @@
 import * as PIXI from 'pixi.js';
 import Loader from '../../Loader';
-import {
-  LOADER_COMPLETE, LOADER_PROGRESS,
-} from '../../Loader/events';
+import { LOADER_PROGRESS } from '../../Loader/events';
 import eventEmitter from '../../utils/eventEmitter';
 import {
   WIDTH, HEIGHT, PRELOADER_ASSETS, IMAGES, SOUNDS, FONTS,
 } from '../../Config';
 import Container from '../Container';
+import { emitLoadingComplete } from './events';
 
 export default class Loading extends Container {
   constructor() {
@@ -41,20 +40,22 @@ export default class Loading extends Container {
 
     const loader = new Loader(PRELOADER_ASSETS, IMAGES, SOUNDS, FONTS);
     eventEmitter.on(LOADER_PROGRESS, this.handleLoaderProgress, this);
-    eventEmitter.on(LOADER_COMPLETE, this.handleLoaderComplete, this);
     loader.load();
   }
 
-  handleLoaderComplete() {
-    console.log('loader complete');
-    this.visible = false;
-  }
+  handleLoaderProgress(progress) {
+    const step = Math.round(progress);
+    setTimeout(() => {
+      this.graphics.clear();
+      this.graphics.beginFill(0x0096ff);
+      this.graphics.drawRect(0, 0, WIDTH * step / 100, HEIGHT);
 
-  handleLoaderProgress(progess) {
-    console.log(`progress: ${progess} = ${WIDTH * progess}`);
-
-    this.graphics.clear();
-    this.graphics.beginFill(0x0096ff);
-    this.graphics.drawRect(0, 0, WIDTH * progess, HEIGHT);
+      if (step === 100) {
+        setTimeout(() => {
+          this.visible = false;
+          emitLoadingComplete();
+        }, 200);
+      }
+    }, step * 12);
   }
 }
