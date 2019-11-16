@@ -15,9 +15,11 @@ import { LOADING_COMPLETE } from '../Loading/events';
 import { emitLevelCompleted } from './events';
 import { PREVIEW_CLICKED } from '../../componets/Preview/events';
 import Note from '../../componets/Note';
+import { INFO_CLICKED, CANCEL_CLICKED } from '../../componets/Note/events';
 import FireWorks from '../FireWorks';
 import Win from '../Win';
 import Info from '../Info';
+import { WIDTH, HEIGHT } from '../../Config';
 
 const { resources } = PIXI.Loader.shared;
 
@@ -34,10 +36,12 @@ export default class Game extends Container {
     eventEmitter.on(LOADING_COMPLETE, this.setup, this);
     eventEmitter.on(PLAY_CLICKED, this.playClicked, this);
     eventEmitter.on(PREVIEW_CLICKED, this.previewClicked, this);
+    eventEmitter.on(INFO_CLICKED, this.infoClicked, this);
+    eventEmitter.on(CANCEL_CLICKED, this.cancelClicked, this);
   }
 
   removeCurrentLevel() {
-    const playZone = this.getChildAt(0);
+    const playZone = this.getChildByName('playzoneContainer');
 
     if (this.level) {
       playZone.removeChild(this.level);
@@ -49,7 +53,7 @@ export default class Game extends Container {
 
     this.removeCurrentLevel();
     this.level = new Level({
-      parent: this.getChildAt(0),
+      parent: this.getChildByName('playzoneContainer'),
     });
 
     this.points = get(this.level, 'data.points');
@@ -76,7 +80,7 @@ export default class Game extends Container {
   }
 
   togglePreviews(visible) {
-    this.getChildAt(0).children.map((child) => {
+    this.getChildByName('playzoneContainer').children.map((child) => {
       const childName = get(child, 'name', '');
       if (childName && childName.indexOf('Preview') === 0) {
         set(child, 'visible', visible);
@@ -96,6 +100,12 @@ export default class Game extends Container {
   }
 
   setup() {
+    const background = new PIXI.Sprite(resources['9049'].texture);
+    background.anchor.set(0.5);
+    background.scale.set(WIDTH / background.width, HEIGHT / background.height);
+    background.position.set(WIDTH / 2, HEIGHT / 2);
+    this.addChild(background);
+
     this.addChild(new PlayZone());
     this.addChild(new Commands());
     this.addChild(new Actions());
@@ -103,7 +113,6 @@ export default class Game extends Container {
 
     const note = new Note({
       character: '?',
-      onClick: this.noteClicked.bind(this),
     });
     this.addChild(note);
 
@@ -117,18 +126,14 @@ export default class Game extends Container {
     }
   }
 
-  noteClicked(character) {
-    switch (character) {
-    case '?':
-      this.getChildByName('infoContainer').show();
-      break;
-    case 'x':
-      this.removeCurrentLevel();
-      this.togglePreviews(true);
-      this.getChildByName('note').changeCharacter('?');
-      break;
-    default:
-    }
+  infoClicked() {
+    this.getChildByName('infoContainer').show();
+  }
+
+  cancelClicked() {
+    this.removeCurrentLevel();
+    this.togglePreviews(true);
+    this.getChildByName('note').changeCharacter('?');
   }
 
   loop() {

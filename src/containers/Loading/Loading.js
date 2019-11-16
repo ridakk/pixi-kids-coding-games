@@ -54,6 +54,10 @@ export default class Loading extends Container {
         setTimeout(() => {
           this.visible = false;
           emitLoadingComplete();
+
+          setTimeout(() => {
+            this.destroy();
+          }, 100);
         }, 200);
       }
     }, step * 12);

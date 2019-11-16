@@ -1,11 +1,11 @@
 import * as PIXI from 'pixi.js';
+import { emitCancelClicked, emitInfoClicked } from './events';
 
 const { resources } = PIXI.Loader.shared;
 
 export default class Note extends PIXI.Sprite {
   constructor({
     character = '?',
-    onClick = () => {},
   } = {}) {
     super(resources.sticky_note1.texture);
 
@@ -14,7 +14,6 @@ export default class Note extends PIXI.Sprite {
     this.position.set(1095, 45);
     this.interactive = true;
     this.buttonMode = true;
-    this.onClick = onClick;
     this.character = character;
 
     const style = new PIXI.TextStyle({
@@ -42,7 +41,15 @@ export default class Note extends PIXI.Sprite {
   }
 
   handleClick() {
-    this.onClick(this.character);
+    switch (this.character) {
+    case '?':
+      emitInfoClicked();
+      break;
+    case 'x':
+      emitCancelClicked();
+      break;
+    default:
+    }
   }
 
   changeCharacter(character) {

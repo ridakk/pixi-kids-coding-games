@@ -20,7 +20,7 @@ export default class Container extends PIXI.Container {
     if (boundingBox) {
       const area = new PIXI.Graphics();
       area.beginFill(0xB1D1D4);
-      area.lineStyle(1, 0x000000);
+      area.alpha = 0;
       area.drawRect(0, 0, xScale * width, yScale * height);
       this.addChild(area);
     }

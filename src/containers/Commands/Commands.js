@@ -7,6 +7,7 @@ import eventEmitter from '../../utils/eventEmitter';
 import Draggable from '../../componets/Draggable';
 import { DRAG_END } from '../../componets/Draggable/events';
 import { LEVEL_COMPLETED } from '../Game/events';
+import { CANCEL_CLICKED } from '../../componets/Note/events';
 import { emitPlayClick } from './events';
 
 const { COMMANDS } = CONTAINERS;
@@ -37,7 +38,8 @@ export default class Commands extends Container {
     this.items = [];
 
     eventEmitter.on(DRAG_END, this.onDragEnd, this);
-    eventEmitter.on(LEVEL_COMPLETED, this.onLevelCompleted, this);
+    eventEmitter.on(LEVEL_COMPLETED, this.clearArrows, this);
+    eventEmitter.on(CANCEL_CLICKED, this.clearArrows, this);
   }
 
   onPlayClickEnd() {
@@ -87,7 +89,7 @@ export default class Commands extends Container {
     }
   }
 
-  onLevelCompleted() {
+  clearArrows() {
     for (let i = 0, len = this.items.length; i < len; i++) {
       const item = get(this.items, `[${i}]`);
 
