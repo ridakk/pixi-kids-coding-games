@@ -68,7 +68,6 @@
     "eventemitter3": "^4.0.0",
     "lodash": "^4.17.15",
     "normalize.css": "^8.0.1",
-    "pixi-filters": "^3.0.3",
     "pixi-particles": "^4.2.0",
     "pixi-sound": "^3.0.3",
     "pixi.js": "^5.1.1",

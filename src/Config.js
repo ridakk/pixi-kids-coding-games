@@ -12,13 +12,7 @@ export const IMAGES = [
   'levels/level3.png',
   'levels/level4.png',
   'ribbons/ribbon1.png',
-  'ribbons/ribbon2.png',
-  'ribbons/ribbon3.png',
-  'ribbons/ribbon4.png',
-  'ribbons/ribbon5.png',
   'sticky-notes/sticky_note1.png',
-  'sticky-notes/sticky_note2.png',
-  'sticky-notes/sticky_note3.png',
   'envelope/square.png',
   'envelope/circle.png',
 ];
