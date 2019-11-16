@@ -5,6 +5,7 @@ export const IMAGES = [
   'police-taxi-cars/cars_top.json',
   'arrows/arrows.json',
   'particle.png',
+  '9049.jpg',
   'win/badge.png',
   'levels/level1.png',
   'levels/level2.png',

@@ -62,3 +62,5 @@ typings/
 
 # webpack output directory
 dist
+
+.DS_Store

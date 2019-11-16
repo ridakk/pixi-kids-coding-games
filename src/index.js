@@ -1,14 +1,8 @@
 import * as PIXI from 'pixi.js';
 import 'pixi-sound'; // eslint-disable-line import/no-unassigned-import
 import { autoPlay } from 'es6-tween';
-import Loader from './Loader';
-import {
-  PRELOADER_COMPLETE, LOADER_PROGRESS, FONTLOADER_COMPLETE,
-} from './Loader/events';
-import eventEmitter from './utils/eventEmitter';
-import {
-  WIDTH, HEIGHT, PRELOADER_ASSETS, IMAGES, SOUNDS, FONTS,
-} from './Config';
+import { WIDTH, HEIGHT } from './Config';
+import Loading from './containers/Loading';
 import Game from './containers/Game';
 
 import 'normalize.css';
@@ -32,21 +26,8 @@ const app = new PIXI.Application({
 
 document.body.appendChild(app.view);
 
+app.stage.addChild(new Loading());
 app.stage.addChild(new Game());
-window.aa = app;
-
-const loader = new Loader(PRELOADER_ASSETS, IMAGES, SOUNDS, FONTS);
-eventEmitter.on(PRELOADER_COMPLETE, () => {
-  console.log('preloader complete');
-});
-
-eventEmitter.on(LOADER_PROGRESS, (progess) => {
-  console.log(`progress: ${progess}`);
-});
-
-eventEmitter.on(FONTLOADER_COMPLETE, (isActive) => {
-  console.log(`font loaded: ${isActive}`);
-});
 
 /**
  * @param {PIXI.Application} app
@@ -92,5 +73,3 @@ resize();
 // Add event listener so that our resize function runs every time the
 // browser window is resized.
 window.addEventListener('resize', resize);
-
-loader.load();
