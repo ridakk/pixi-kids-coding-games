@@ -1,6 +1,4 @@
 import * as PIXI from 'pixi.js';
-import * as particles from 'pixi-particles';
-import emitter from './emitter';
 import { HEIGHT } from '../../Config';
 
 const gravity = 0.03;
@@ -9,15 +7,9 @@ const { resources } = PIXI.Loader.shared;
 class Particle {
   constructor(scale, explodeFn = () => {}) {
     this.container = new PIXI.Container();
-    this.emitter = new particles.Emitter(this.container,
-      [resources.particle.texture],
-      Object.assign({}, emitter, {
-        color: {
-          start: Math.floor(Math.random() * 16777215).toString(16),
-          end: Math.floor(Math.random() * 16777215).toString(16),
-        },
-      }));
-    this.emitter.emit = true;
+    this.particle = new PIXI.Sprite(resources.particle.texture);
+    this.particle.tint = Math.random() * 0xFFFFFF;
+    this.container.addChild(this.particle);
     this.scale = scale;
     this.container.scale.x = this.scale;
     this.container.scale.y = this.scale;
@@ -49,7 +41,6 @@ class Particle {
 
   update() {
     const now = Date.now();
-    this.emitter.update((now - this.elapsed) * 0.001);
     this.elapsed = now;
     this.container.position.x += this.velocity.x;
     this.container.position.y += this.velocity.y;

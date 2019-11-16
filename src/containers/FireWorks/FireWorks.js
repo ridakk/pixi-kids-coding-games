@@ -21,7 +21,7 @@ export default class FireWorks extends Container {
   }
 
   explode(position, scale) {
-    const steps = random(4, 8);
+    const steps = random(8, 12);
     const radius = 2 + Math.random() * 4;
     for (let i = 0; i < steps; i++) {
       // get velocity
@@ -55,9 +55,6 @@ export default class FireWorks extends Container {
       return particle;
     }
 
-    if (this.particles.length >= 30) {
-      return null;
-    }
 
     // otherwise create a new particle
     particle = new Particle(1, this.explode);
@@ -67,7 +64,7 @@ export default class FireWorks extends Container {
   }
 
   launchParticle() {
-    const particle = this.getParticle(random(0.5, 1.0));
+    const particle = this.getParticle(random(0.5, 0.8));
     if (!particle) {
       clearTimeout(this.launchParticleTimer);
       this.launchParticleTimer = setTimeout(this.launchParticle, 200 + Math.random() * 600);
