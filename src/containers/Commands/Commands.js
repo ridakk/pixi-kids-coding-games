@@ -61,6 +61,14 @@ export default class Commands extends Container {
   }
 
   onDragEnd(data) {
+    if (data.fromParent.indexOf('envelope') !== -1) {
+      const envelope = this.getChildByName(data.fromParent);
+      envelope.tint = 0xFFFFFF;
+      envelope.removeChildren();
+      this.itemIndex -= 1;
+      return;
+    }
+
     if (this.itemIndex === 10) {
       return;
     }

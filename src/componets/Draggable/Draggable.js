@@ -86,6 +86,7 @@ export default class Draggable extends PIXI.Sprite {
 
     emitDragEnd({
       name: this.name,
+      fromParent: this.parent.name,
       resource: this.resourceName,
       texture: this.textureName,
       degree: this.degree,

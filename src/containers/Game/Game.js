@@ -222,7 +222,7 @@ export default class Game extends Container {
       const userCommand = get(userCommands, `[${i}]`);
       const command = get(this.commands, `[${i}]`);
 
-      if (command.name === userCommand.name) {
+      if (command && command.name === userCommand.name) {
         this.loopTo = command.pointIndexReached;
 
         this.completed = get(this.points, `[${this.loopTo}].end`, false);
