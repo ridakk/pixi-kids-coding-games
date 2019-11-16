@@ -107,5 +107,6 @@ export default class Commands extends Container {
     }
 
     this.items.splice(0, this.items.length);
+    this.itemIndex = 0;
   }
 }
