@@ -12,7 +12,7 @@ import Actions from '../Actions';
 import Logo from '../Logo';
 import levels from '../../levels';
 import { LOADING_COMPLETE } from '../Loading/events';
-import { emitLevelCompleted } from './events';
+import { emitLevelCompleted, emitLevelStepReached } from './events';
 import { PREVIEW_CLICKED } from '../../componets/Preview/events';
 import Note from '../../componets/Note';
 import { INFO_CLICKED, CANCEL_CLICKED } from '../../componets/Note/events';
@@ -166,6 +166,7 @@ export default class Game extends Container {
         }, 1500)
         .easing(Easing.Quadratic.In)
         .on('complete', () => {
+          emitLevelStepReached();
           this.loopFrom += 1;
           this.loop(this.loopFrom, this.loopTo);
         })

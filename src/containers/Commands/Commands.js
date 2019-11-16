@@ -5,7 +5,7 @@ import { CONTAINERS } from '../../Config';
 import eventEmitter from '../../utils/eventEmitter';
 import Draggable from '../../componets/Draggable';
 import { DRAG_END } from '../../componets/Draggable/events';
-import { LEVEL_COMPLETED } from '../Game/events';
+import { LEVEL_COMPLETED, LEVEL_STEP_REACHED } from '../Game/events';
 import { CANCEL_CLICKED } from '../../componets/Note/events';
 import { PREVIEW_CLICKED } from '../../componets/Preview/events';
 import { emitPlayClick } from './events';
@@ -47,9 +47,11 @@ export default class Commands extends Container {
 
     this.items = [];
     this.itemIndex = 0;
+    this.reachedStepIndex = 0;
 
     eventEmitter.on(DRAG_END, this.onDragEnd, this);
     eventEmitter.on(LEVEL_COMPLETED, this.clearArrows, this);
+    eventEmitter.on(LEVEL_STEP_REACHED, this.reachedStep, this);
     eventEmitter.on(CANCEL_CLICKED, this.clearArrows, this);
     eventEmitter.on(PREVIEW_CLICKED, this.clearArrows, this);
   }
@@ -100,13 +102,21 @@ export default class Commands extends Container {
     }
   }
 
+  reachedStep() {
+    this.getChildByName(`envelope${this.reachedStepIndex}`).tint = 0x6acd75;
+    this.reachedStepIndex += 1;
+  }
+
   clearArrows() {
     const { numberOfButtons } = COMMANDS;
     for (let i = 0; i < numberOfButtons; i++) {
-      this.getChildByName(`envelope${i}`).removeChildren();
+      const envelope = this.getChildByName(`envelope${i}`);
+      envelope.tint = 0xFFFFFF;
+      envelope.removeChildren();
     }
 
     this.items.splice(0, this.items.length);
     this.itemIndex = 0;
+    this.reachedStepIndex = 0;
   }
 }
