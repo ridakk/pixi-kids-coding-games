@@ -1,4 +1,3 @@
-import get from 'lodash/get';
 import * as PIXI from 'pixi.js';
 import { Easing, Tween } from 'es6-tween';
 import Container from '../Container';
@@ -8,25 +7,36 @@ import Draggable from '../../componets/Draggable';
 import { DRAG_END } from '../../componets/Draggable/events';
 import { LEVEL_COMPLETED } from '../Game/events';
 import { CANCEL_CLICKED } from '../../componets/Note/events';
+import { PREVIEW_CLICKED } from '../../componets/Preview/events';
 import { emitPlayClick } from './events';
 
 const { COMMANDS } = CONTAINERS;
+const { resources } = PIXI.Loader.shared;
 
 export default class Commands extends Container {
   constructor() {
     super(COMMANDS);
 
+    const { numberOfButtons } = COMMANDS;
+    for (let i = 0; i < numberOfButtons; i++) {
+      const envelope = new PIXI.Sprite(resources.square.texture);
+      envelope.name = `envelope${i}`;
+      envelope.anchor.set(0.5);
+      envelope.scale.set(0.6);
+      envelope.position.set((i * envelope.width) + (envelope.width * 0.5), envelope.height * 0.5);
+      this.addChild(envelope);
+    }
 
-    const [xScale, yScale] = COMMANDS.scale;
-    const playWidth = xScale * this.height;
-    const playHeight = yScale * this.height;
-    this.play = new PIXI.Graphics();
+    const lastEnvelope = this.getChildByName('envelope9');
+    this.play = new PIXI.Sprite(resources.circle.texture);
     this.play.name = 'playBox';
     this.play.interactive = true;
     this.play.buttonMode = true;
-    this.play.beginFill(0x6acd75);
-    this.play.lineStyle(1.2, 0x000000);
-    this.play.drawRect(this.width - playWidth, 0, playWidth, playHeight);
+    this.play.tint = 0x6acd75;
+    this.play.anchor.set(0.5);
+    this.play.scale.set(0.8);
+    this.play.position.set((numberOfButtons * lastEnvelope.width) + (this.play.width * 0.5),
+      lastEnvelope.height * 0.5);
     this.addChild(this.play);
 
     this.play
@@ -36,10 +46,12 @@ export default class Commands extends Container {
       .on('touchendoutside', this.onPlayClickEnd.bind(this));
 
     this.items = [];
+    this.itemIndex = 0;
 
     eventEmitter.on(DRAG_END, this.onDragEnd, this);
     eventEmitter.on(LEVEL_COMPLETED, this.clearArrows, this);
     eventEmitter.on(CANCEL_CLICKED, this.clearArrows, this);
+    eventEmitter.on(PREVIEW_CLICKED, this.clearArrows, this);
   }
 
   onPlayClickEnd() {
@@ -64,38 +76,32 @@ export default class Commands extends Container {
         name: data.name,
         resource: data.resource,
         texture: data.texture,
-        scale: [0.7, 0.7],
+        scale: [1, 1],
         degree: data.degree,
       });
-      const previousItemsX = get(this.items, `[${this.items.length - 1}].x`, 0);
-      const previousItemsWidth = get(this.items, `[${this.items.length - 1}].width`, 0);
-      const initialX = previousItemsX + previousItemsWidth * 0.5 + (draggable.width * 0.5) + 20;
-      const initialY = this.height * 0.5;
-      draggable.position.set(initialX, initialY);
-      draggable.original.x = initialX;
-      draggable.original.y = initialY;
+      draggable.position.set(0, -5);
 
       draggable.scale.set(0);
       new Tween(draggable.scale)
         .to({
-          x: 0.7,
-          y: 0.7,
+          x: 1,
+          y: 1,
         }, 750)
         .easing(Easing.Bounce.Out)
         .start();
 
       this.items.push(draggable);
-      this.addChild(draggable);
+      this.getChildByName(`envelope${this.itemIndex}`).addChild(draggable);
+      this.itemIndex += 1;
     }
   }
 
   clearArrows() {
-    for (let i = 0, len = this.items.length; i < len; i++) {
-      const item = get(this.items, `[${i}]`);
-
-      this.removeChild(item);
+    const { numberOfButtons } = COMMANDS;
+    for (let i = 0; i < numberOfButtons; i++) {
+      this.getChildByName(`envelope${i}`).removeChildren();
     }
 
-    this.items = [];
+    this.items.splice(0, this.items.length);
   }
 }

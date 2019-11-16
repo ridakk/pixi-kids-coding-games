@@ -19,6 +19,8 @@ export const IMAGES = [
   'sticky-notes/sticky_note1.png',
   'sticky-notes/sticky_note2.png',
   'sticky-notes/sticky_note3.png',
+  'envelope/square.png',
+  'envelope/circle.png',
 ];
 export const SOUNDS = [
   'emergency_police_car_drive_fast_with_sirens_internal.mp3',
@@ -52,6 +54,7 @@ export const CONTAINERS = {
     scale: [1, 1],
     width: 890,
     height: 70,
+    numberOfButtons: 10,
   },
   LOGO: {
     name: 'logo',
