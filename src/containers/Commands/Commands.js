@@ -107,9 +107,6 @@ export default class Commands extends Container {
     const yEnd = globalPosition.y + this.height + 30;
     const { x, y } = data;
 
-    console.log(`x: ${x} is between ${xStart} - ${xEnd}`);
-    console.log(`y: ${y} is between ${yStart} - ${yEnd}`);
-
     if (x >= xStart && x <= xEnd
       && y >= yStart && y <= yEnd) {
       const draggable = new Draggable({
