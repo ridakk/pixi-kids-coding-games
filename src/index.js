@@ -36,7 +36,6 @@ app.stage.addChild(new Game());
 function resize() {
   const vpw = window.innerWidth; // Width of the viewport
   const vph = window.innerHeight; // Height of the viewport
-  console.log(`window inner width/height: ${vpw}/${vph}`);
   let nvw; // New game width
   let nvh; // New game height
 
@@ -58,13 +57,11 @@ function resize() {
   // Set the game screen size to the new values.
   // This command only makes the screen bigger --- it does not scale the contents of the game.
   // There will be a lot of extra room --- or missing room --- if we don't scale the stage.
-  console.log(`app renderer resize: ${nvw}/${nvh}`);
   app.renderer.resize(nvw, nvh);
 
   // This command scales the stage to fit the new size of the game.
   const scaleX = nvw / WIDTH;
   const scaleY = nvh / HEIGHT;
-  console.log(`app stage scale: ${scaleX}/${scaleY}`);
   app.stage.scale.set(scaleX, scaleY);
 }
 
