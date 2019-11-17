@@ -5,10 +5,11 @@ import { CONTAINERS } from '../../Config';
 import eventEmitter from '../../utils/eventEmitter';
 import Draggable from '../../componets/Draggable';
 import { DRAG_END } from '../../componets/Draggable/events';
-import { LEVEL_COMPLETED, LEVEL_STEP_REACHED } from '../Game/events';
+import { LEVEL_STEP_REACHED } from '../Game/events';
 import { CANCEL_CLICKED } from '../../componets/Note/events';
 import { PREVIEW_CLICKED } from '../../componets/Preview/events';
 import { emitPlayClick } from './events';
+import { WIN_DISMISSED } from '../Win/events';
 
 const { COMMANDS } = CONTAINERS;
 const { resources } = PIXI.Loader.shared;
@@ -17,6 +18,11 @@ export default class Commands extends Container {
   constructor() {
     super(COMMANDS);
 
+    this.buttonsContainer = new PIXI.Container();
+    this.addChild(this.buttonsContainer);
+    this.textContainer = new PIXI.Container();
+    this.addChild(this.textContainer);
+
     const { numberOfButtons } = COMMANDS;
     for (let i = 0; i < numberOfButtons; i++) {
       const envelope = new PIXI.Sprite(resources.square.texture);
@@ -24,10 +30,10 @@ export default class Commands extends Container {
       envelope.anchor.set(0.5);
       envelope.scale.set(0.6);
       envelope.position.set((i * envelope.width) + (envelope.width * 0.5), envelope.height * 0.5);
-      this.addChild(envelope);
+      this.buttonsContainer.addChild(envelope);
     }
 
-    const lastEnvelope = this.getChildByName('envelope9');
+    const lastEnvelope = this.buttonsContainer.getChildByName('envelope9');
     this.play = new PIXI.Sprite(resources.circle.texture);
     this.play.name = 'playBox';
     this.play.interactive = true;
@@ -37,7 +43,7 @@ export default class Commands extends Container {
     this.play.scale.set(0.8);
     this.play.position.set((numberOfButtons * lastEnvelope.width) + (this.play.width * 0.5),
       lastEnvelope.height * 0.5);
-    this.addChild(this.play);
+    this.buttonsContainer.addChild(this.play);
 
     this.play
       .on('mouseup', this.onPlayClickEnd.bind(this))
@@ -45,15 +51,35 @@ export default class Commands extends Container {
       .on('touchend', this.onPlayClickEnd.bind(this))
       .on('touchendoutside', this.onPlayClickEnd.bind(this));
 
+    const style = new PIXI.TextStyle({
+      dropShadow: true,
+      fill: [
+        '#0096ff',
+        '#00f900',
+      ],
+      fontFamily: 'Christopher Done',
+      fontSize: 60,
+      fontWeight: 600,
+      stroke: '#0433ff',
+      strokeThickness: 2,
+      align: 'center',
+    });
+    const text = new PIXI.Text('Select a level...', style);
+    text.anchor.set(0.5);
+    text.position.set(text.width * 0.5, text.height * 0.5);
+    this.textContainer.addChild(text);
+
     this.items = [];
     this.itemIndex = 0;
     this.reachedStepIndex = 0;
+    this.buttonsContainer.visible = false;
+    this.textContainer.visible = true;
 
     eventEmitter.on(DRAG_END, this.onDragEnd, this);
-    eventEmitter.on(LEVEL_COMPLETED, this.clearArrows, this);
+    eventEmitter.on(WIN_DISMISSED, this.winDismissed, this);
     eventEmitter.on(LEVEL_STEP_REACHED, this.reachedStep, this);
-    eventEmitter.on(CANCEL_CLICKED, this.clearArrows, this);
-    eventEmitter.on(PREVIEW_CLICKED, this.clearArrows, this);
+    eventEmitter.on(CANCEL_CLICKED, this.cancelClicked, this);
+    eventEmitter.on(PREVIEW_CLICKED, this.previewClicked, this);
   }
 
   onPlayClickEnd() {
@@ -62,7 +88,7 @@ export default class Commands extends Container {
 
   onDragEnd(data) {
     if (data.fromParent.indexOf('envelope') !== -1) {
-      const envelope = this.getChildByName(data.fromParent);
+      const envelope = this.buttonsContainer.getChildByName(data.fromParent);
       envelope.tint = 0xFFFFFF;
       envelope.removeChildren();
       this.itemIndex -= 1;
@@ -105,20 +131,38 @@ export default class Commands extends Container {
         .start();
 
       this.items.push(draggable);
-      this.getChildByName(`envelope${this.itemIndex}`).addChild(draggable);
+      this.buttonsContainer.getChildByName(`envelope${this.itemIndex}`).addChild(draggable);
       this.itemIndex += 1;
     }
   }
 
+  cancelClicked() {
+    this.buttonsContainer.visible = false;
+    this.textContainer.visible = true;
+    this.clearArrows();
+  }
+
+  previewClicked() {
+    this.buttonsContainer.visible = true;
+    this.textContainer.visible = false;
+    this.clearArrows();
+  }
+
+  winDismissed() {
+    this.buttonsContainer.visible = false;
+    this.textContainer.visible = true;
+    this.clearArrows();
+  }
+
   reachedStep() {
-    this.getChildByName(`envelope${this.reachedStepIndex}`).tint = 0x6acd75;
+    this.buttonsContainer.getChildByName(`envelope${this.reachedStepIndex}`).tint = 0x6acd75;
     this.reachedStepIndex += 1;
   }
 
   clearArrows() {
     const { numberOfButtons } = COMMANDS;
     for (let i = 0; i < numberOfButtons; i++) {
-      const envelope = this.getChildByName(`envelope${i}`);
+      const envelope = this.buttonsContainer.getChildByName(`envelope${i}`);
       envelope.tint = 0xFFFFFF;
       envelope.removeChildren();
     }

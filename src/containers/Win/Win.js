@@ -1,13 +1,12 @@
 import * as PIXI from 'pixi.js';
 import Container from '../Container';
 import { WIDTH, HEIGHT } from '../../Config';
+import { emitWinDismissed } from './events';
 
 const { resources } = PIXI.Loader.shared;
 
 export default class Win extends Container {
-  constructor({
-    onClick = () => {},
-  } = {}) {
+  constructor() {
     super({
       name: 'Win',
       boundingBox: false,
@@ -77,9 +76,9 @@ export default class Win extends Container {
     this.addChild(text2);
 
     this
-      .on('mouseup', onClick)
-      .on('mouseupoutside', onClick)
-      .on('touchend', onClick)
-      .on('touchendoutside', onClick);
+      .on('mouseup', emitWinDismissed)
+      .on('mouseupoutside', emitWinDismissed)
+      .on('touchend', emitWinDismissed)
+      .on('touchendoutside', emitWinDismissed);
   }
 }

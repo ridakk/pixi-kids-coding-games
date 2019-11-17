@@ -19,6 +19,7 @@ export default class Container extends PIXI.Container {
 
     if (boundingBox) {
       const area = new PIXI.Graphics();
+      area.name = 'boundingBox';
       area.beginFill(0xB1D1D4);
       area.alpha = 0;
       area.drawRect(0, 0, xScale * width, yScale * height);

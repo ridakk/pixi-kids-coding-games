@@ -1,28 +1,14 @@
-import { Easing, Tween } from 'es6-tween';
+import * as PIXI from 'pixi.js';
 import Container from '../Container';
 import { CONTAINERS } from '../../Config';
 import Draggable from '../../componets/Draggable';
+import eventEmitter from '../../utils/eventEmitter';
+import { CANCEL_CLICKED } from '../../componets/Note/events';
+import { PREVIEW_CLICKED } from '../../componets/Preview/events';
+import { WIN_DISMISSED } from '../Win/events';
 
 const { ACTIONS } = CONTAINERS;
-
-function fadeIn(item) {
-  item.alpha = 0;
-  item.scale.set(0);
-
-  new Tween(item)
-    .to({
-      alpha: 1,
-    }, 1500)
-    .easing(Easing.Quartic.Out)
-    .start();
-  new Tween(item.scale)
-    .to({
-      x: 1,
-      y: 1,
-    }, 1500)
-    .easing(Easing.Bounce.Out)
-    .start();
-}
+const { resources } = PIXI.Loader.shared;
 
 export default class Actions extends Container {
   constructor() {
@@ -32,77 +18,50 @@ export default class Actions extends Container {
     const width = xScale * ACTIONS.width / 2;
     const height = yScale * ACTIONS.height / 2;
 
-    const left = new Draggable({
-      name: 'left',
+    this.visible = false;
+
+    this.addArrow('left', 0, 0, 0);
+    this.addArrow('right', 1, 0, 180);
+    this.addArrow('up', 0, 1, -90);
+    this.addArrow('down', 1, 1, 90);
+
+    eventEmitter.on(WIN_DISMISSED, this.winDismissed, this);
+    eventEmitter.on(CANCEL_CLICKED, this.cancelClicked, this);
+    eventEmitter.on(PREVIEW_CLICKED, this.previewClicked, this);
+  }
+
+  addArrow(name, xIndex, yIndex, degree) {
+    const [xScale, yScale] = ACTIONS.scale;
+    const width = xScale * ACTIONS.width / 2;
+    const height = yScale * ACTIONS.height / 2;
+
+    const envelope = new PIXI.Sprite(resources.square.texture);
+    envelope.name = `${name}Envelope`;
+    envelope.anchor.set(0.5);
+    envelope.scale.set(0.8);
+    envelope.position.set((xIndex * width) + (width * 0.5),
+      (yIndex * height) + (height * 0.5));
+
+    const arrow = new Draggable({
+      name,
       resource: 'arrows',
       texture: 'arrow1',
-      degree: 0,
-      position: [
-        (0 * width) + (width * 0.5),
-        (0 * height) + (height * 0.5),
-      ],
+      degree,
+      position: [0, -5],
     });
-    // left.filters = [new GlowFilter(15, 2, 1, 0x4bec13, 0.5)];
-    // new Tween(left.scale)
-    //   .to({
-    //     x: 1.1,
-    //     y: 1.1,
-    //   }, 1500)
-    //   .repeat(Infinity)
-    //   .yoyo(true)
-    //   .easing(Easing.Bounce.In)
-    //   .start();
+    envelope.addChild(arrow);
+    this.addChild(envelope);
+  }
 
-    // new Tween(left.filters[0])
-    //   .to({
-    //     // distance: 50,
-    //     outerStrength: 4,
-    //   }, 1500)
-    //   .repeat(Infinity)
-    //   .yoyo(true)
-    //   .easing(Easing.Exponential.InOut)
-    //   .start();
-    this.addChild(left);
+  cancelClicked() {
+    this.visible = false;
+  }
 
-    const right = new Draggable({
-      name: 'right',
-      resource: 'arrows',
-      texture: 'arrow1',
-      degree: 180,
-      position: [
-        (1 * width) + (width * 0.5),
-        (0 * height) + (height * 0.5),
-      ],
-    });
-    this.addChild(right);
+  previewClicked() {
+    this.visible = true;
+  }
 
-    const up = new Draggable({
-      name: 'up',
-      resource: 'arrows',
-      texture: 'arrow1',
-      degree: -90,
-      position: [
-        (0 * width) + (width * 0.5),
-        (1 * height) + (height * 0.5),
-      ],
-    });
-    this.addChild(up);
-
-    const down = new Draggable({
-      name: 'down',
-      resource: 'arrows',
-      texture: 'arrow1',
-      degree: 90,
-      position: [
-        (1 * width) + (width * 0.5),
-        (1 * height) + (height * 0.5),
-      ],
-    });
-    this.addChild(down);
-
-    fadeIn(left);
-    fadeIn(right);
-    fadeIn(up);
-    fadeIn(down);
+  winDismissed() {
+    this.visible = false;
   }
 }

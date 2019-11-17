@@ -20,6 +20,7 @@ import FireWorks from '../FireWorks';
 import Win from '../Win';
 import Info from '../Info';
 import { WIDTH, HEIGHT } from '../../Config';
+import { WIN_DISMISSED } from '../Win/events';
 
 const { resources } = PIXI.Loader.shared;
 
@@ -38,6 +39,7 @@ export default class Game extends Container {
     eventEmitter.on(PREVIEW_CLICKED, this.previewClicked, this);
     eventEmitter.on(INFO_CLICKED, this.infoClicked, this);
     eventEmitter.on(CANCEL_CLICKED, this.cancelClicked, this);
+    eventEmitter.on(WIN_DISMISSED, this.winDismissed, this);
   }
 
   removeCurrentLevel() {
@@ -141,9 +143,7 @@ export default class Game extends Container {
       resources.emergency_police_car_drive_fast_with_sirens_internal.sound.stop();
 
       if (this.completed) {
-        const win = new Win({
-          onClick: this.fireworksClicked.bind(this),
-        });
+        const win = new Win();
         const fireworks = new FireWorks();
         this.addChild(win);
         this.addChild(fireworks);
@@ -188,7 +188,7 @@ export default class Game extends Container {
     }
   }
 
-  fireworksClicked() {
+  winDismissed() {
     this.removeCurrentLevel();
     this.togglePreviews(true);
     this.getChildByName('note').changeCharacter('?');
