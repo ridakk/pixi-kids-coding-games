@@ -45,6 +45,23 @@ export default class Commands extends Container {
       lastEnvelope.height * 0.5);
     this.buttonsContainer.addChild(this.play);
 
+    const playTextStyle = new PIXI.TextStyle({
+      dropShadow: true,
+      fill: [
+        '#FFFFFF',
+      ],
+      fontFamily: 'Christopher Done',
+      fontSize: 50,
+      fontWeight: 600,
+      stroke: '#0433ff',
+      strokeThickness: 1,
+      align: 'center',
+    });
+    const playText = new PIXI.Text('GO', playTextStyle);
+    playText.anchor.set(0.5);
+    playText.position.set(0, -5);
+    this.play.addChild(playText);
+
     this.play
       .on('mouseup', this.onPlayClickEnd.bind(this))
       .on('mouseupoutside', this.onPlayClickEnd.bind(this))

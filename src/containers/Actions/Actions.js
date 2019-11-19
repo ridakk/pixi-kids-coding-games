@@ -14,10 +14,6 @@ export default class Actions extends Container {
   constructor() {
     super(ACTIONS);
 
-    const [xScale, yScale] = ACTIONS.scale;
-    const width = xScale * ACTIONS.width / 2;
-    const height = yScale * ACTIONS.height / 2;
-
     this.visible = false;
 
     this.addArrow('left', 0, 0, 0);
