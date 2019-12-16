@@ -7,10 +7,6 @@ export const IMAGES = [
   'particle.png',
   '9049.jpg',
   'win/badge.png',
-  'levels/level1.png',
-  'levels/level2.png',
-  'levels/level3.png',
-  'levels/level4.png',
   'ribbons/ribbon1.png',
   'sticky-notes/sticky_note1.png',
   'envelope/square.png',
@@ -28,9 +24,8 @@ export const FONTS = [
   },
 ];
 export const PREVIEW = {
-  numberOfItem: 6,
-  numberOfColoumns: 3,
-  containerOffset: 8,
+  numberOfItem: 8,
+  numberOfColoumns: 4,
 };
 export const WIDTH = 1280;
 export const HEIGHT = 720;

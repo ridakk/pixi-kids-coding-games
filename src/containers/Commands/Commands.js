@@ -7,7 +7,7 @@ import Draggable from '../../componets/Draggable';
 import { DRAG_END } from '../../componets/Draggable/events';
 import { LEVEL_STEP_REACHED } from '../Game/events';
 import { CANCEL_CLICKED } from '../../componets/Note/events';
-import { PREVIEW_CLICKED } from '../../componets/Preview/events';
+import { PREVIEW_CLICKED } from '../Preview/events';
 import { emitPlayClick } from './events';
 import { WIN_DISMISSED } from '../Win/events';
 

@@ -8,6 +8,7 @@ export default class Container extends PIXI.Container {
     width = 0,
     height = 0,
     boundingBox = true,
+    boundingBoxAlpha = 0,
   } = {}) {
     super();
 
@@ -21,7 +22,7 @@ export default class Container extends PIXI.Container {
       const area = new PIXI.Graphics();
       area.name = 'boundingBox';
       area.beginFill(0xB1D1D4);
-      area.alpha = 0;
+      area.alpha = boundingBoxAlpha;
       area.drawRect(0, 0, xScale * width, yScale * height);
       this.addChild(area);
     }

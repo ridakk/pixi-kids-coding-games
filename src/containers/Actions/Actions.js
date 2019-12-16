@@ -4,7 +4,7 @@ import { CONTAINERS } from '../../Config';
 import Draggable from '../../componets/Draggable';
 import eventEmitter from '../../utils/eventEmitter';
 import { CANCEL_CLICKED } from '../../componets/Note/events';
-import { PREVIEW_CLICKED } from '../../componets/Preview/events';
+import { PREVIEW_CLICKED } from '../Preview/events';
 import { WIN_DISMISSED } from '../Win/events';
 
 const { ACTIONS } = CONTAINERS;

@@ -13,7 +13,7 @@ import Logo from '../Logo';
 import levels from '../../levels';
 import { LOADING_COMPLETE } from '../Loading/events';
 import { emitLevelCompleted, emitLevelStepReached } from './events';
-import { PREVIEW_CLICKED } from '../../componets/Preview/events';
+import { PREVIEW_CLICKED } from '../Preview/events';
 import Note from '../../componets/Note';
 import { INFO_CLICKED, CANCEL_CLICKED } from '../../componets/Note/events';
 import FireWorks from '../FireWorks';
