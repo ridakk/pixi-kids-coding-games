@@ -63,6 +63,12 @@ export default class Commands extends Container {
     this.play.addChild(playText);
 
     this.play
+      .on('mousedown', () => {
+        this.play.position.y += 10;
+      })
+      .on('touchstart', () => {
+        this.play.position.y += 10;
+      })
       .on('mouseup', this.onPlayClickEnd.bind(this))
       .on('mouseupoutside', this.onPlayClickEnd.bind(this))
       .on('touchend', this.onPlayClickEnd.bind(this))
@@ -100,6 +106,7 @@ export default class Commands extends Container {
   }
 
   onPlayClickEnd() {
+    this.play.position.y -= 10;
     emitPlayClick(this.items);
   }
 
