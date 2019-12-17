@@ -45,7 +45,15 @@ export default class Preview extends Container {
       (this.height * 0.5) - (level.height * 0.5));
     this.addChild(level);
 
-    this.scale.set(previewItemWidth / level.width);
+    const scaleFactor = previewItemWidth / level.width;
+    this.scale.set(scaleFactor);
+
+    this.badge = new PIXI.Sprite(resources.badge.texture);
+    this.badge.anchor.set(0.5);
+    this.badge.position.set(this.width * 0.5 / scaleFactor, this.height * 0.5 / scaleFactor);
+    this.badge.visible = false;
+    this.badge.scale.set(1 / scaleFactor);
+    this.addChild(this.badge);
 
     this
       .on('mouseup', this.onClickEnd.bind(this))
@@ -62,9 +70,7 @@ export default class Preview extends Container {
 
   onLevelCompleted(name) {
     if (name === `Level${this.index}Ground`) {
-      const badge = new PIXI.Sprite(resources.badge.texture);
-      badge.anchor.set(0.5);
-      this.addChild(badge);
+      this.badge.visible = true;
     }
   }
 }
