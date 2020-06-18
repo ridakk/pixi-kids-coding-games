@@ -92,7 +92,6 @@ export default class Commands extends Container {
     text.position.set(text.width * 0.5, text.height * 0.5);
     this.textContainer.addChild(text);
 
-    this.items = [];
     this.itemIndex = 0;
     this.reachedStepIndex = 0;
     this.buttonsContainer.visible = false;
@@ -107,7 +106,13 @@ export default class Commands extends Container {
 
   onPlayClickEnd() {
     this.play.position.y -= 10;
-    emitPlayClick(this.items);
+    emitPlayClick(this.buttonsContainer.children.reduce((prev, curr) => {
+      if (curr.children.length > 0 && curr.children[0] instanceof Draggable) {
+        prev.push(curr.children[0]);
+      }
+
+      return prev;
+    }, []));
   }
 
   onDragEnd(data) {
@@ -151,7 +156,6 @@ export default class Commands extends Container {
         .easing(Easing.Bounce.Out)
         .start();
 
-      this.items.push(draggable);
       this.buttonsContainer.getChildByName(`envelope${this.itemIndex}`).addChild(draggable);
       this.itemIndex += 1;
     }
@@ -188,7 +192,6 @@ export default class Commands extends Container {
       envelope.removeChildren();
     }
 
-    this.items.splice(0, this.items.length);
     this.itemIndex = 0;
     this.reachedStepIndex = 0;
   }

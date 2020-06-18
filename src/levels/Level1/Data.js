@@ -7,13 +7,11 @@ const DATA = {
   points: [{
     index: 0,
     start: true,
+    allowedDirections: ['left'],
+    initialDirection: 'left',
   }, {
     index: 5,
     end: true,
-  }],
-  commands: [{
-    name: 'left',
-    pointIndexReached: 1,
   }],
 };
 

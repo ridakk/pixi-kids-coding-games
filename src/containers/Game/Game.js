@@ -24,6 +24,32 @@ import { WIN_DISMISSED } from '../Win/events';
 
 const { resources } = PIXI.Loader.shared;
 
+const ROTATION_LOOKUP = {
+  up: 0,
+  down: 180,
+  left: 90,
+  right: -90,
+};
+
+const MOVE_LOOKUP = {
+  up: {
+    coordinate: 'y',
+    failMove: -50,
+  },
+  down: {
+    coordinate: 'y',
+    failMove: 50,
+  },
+  right: {
+    coordinate: 'x',
+    failMove: -50,
+  },
+  left: {
+    coordinate: 'x',
+    failMove: 50,
+  },
+};
+
 export default class Game extends Container {
   constructor() {
     super({
@@ -76,7 +102,7 @@ export default class Game extends Container {
     this.movingItem = new PIXI.Sprite(resources.cars_top.textures.police);
     this.movingItem.scale.set(0.4);
     this.movingItem.anchor.set(0.5);
-    this.movingItem.rotation = Math.PI * 90 / 180;
+    this.movingItem.rotation = Math.PI * ROTATION_LOOKUP.left / 180;
     this.movingItem.position.set(startingPoint.x - this.movingItem.width, startingPoint.y);
     this.level.addChild(this.movingItem);
   }
@@ -99,6 +125,9 @@ export default class Game extends Container {
     this.setMovingItem();
 
     this.getChildByName('note').changeCharacter('x');
+
+    this.successMoveCounter = 0;
+    this.stepIndex = 0;
   }
 
   setup() {
@@ -138,56 +167,6 @@ export default class Game extends Container {
     this.getChildByName('note').changeCharacter('?');
   }
 
-  loop() {
-    if (this.loopFrom >= this.points.length || this.loopFrom > this.loopTo) {
-      resources.emergency_police_car_drive_fast_with_sirens_internal.sound.stop();
-
-      if (this.completed) {
-        const win = new Win();
-        const fireworks = new FireWorks();
-        this.addChild(win);
-        this.addChild(fireworks);
-        fireworks.launchParticle();
-        fireworks.loop();
-
-        emitLevelCompleted(this.level.name);
-      }
-      return;
-    }
-
-    const point = this.points[this.loopFrom];
-
-    if (!isNil(point.index) && point.start !== true) {
-      const nextChild = this.level.getChildAt(point.index);
-      new Tween(this.movingItem)
-        .to({
-          x: point.end ? nextChild.x + this.movingItem.width : nextChild.x,
-          y: nextChild.y,
-        }, 1500)
-        .easing(Easing.Quadratic.In)
-        .on('complete', () => {
-          emitLevelStepReached();
-          this.loopFrom += 1;
-          this.loop(this.loopFrom, this.loopTo);
-        })
-        .start();
-    } else if (!isNil(point.rotate)) {
-      new Tween(this.movingItem)
-        .to({
-          rotation: this.movingItem.rotation + Math.PI * point.rotate / 180,
-        }, 700)
-        .easing(Easing.Sinusoidal.InOut)
-        .on('complete', () => {
-          this.loopFrom += 1;
-          this.loop(this.loopFrom, this.loopTo);
-        })
-        .start();
-    } else {
-      this.loopFrom += 1;
-      this.loop(this.loopFrom, this.loopTo);
-    }
-  }
-
   winDismissed() {
     this.removeCurrentLevel();
     this.togglePreviews(true);
@@ -217,19 +196,120 @@ export default class Game extends Container {
       .start();
   }
 
-  playClicked(userCommands) {
-    for (let i = 0, len = userCommands.length; i < len; i++) {
-      const userCommand = get(userCommands, `[${i}]`);
-      const command = get(this.commands, `[${i}]`);
+  // TODO: failure moves continue fails
+  // TODO: position based rotation
 
-      if (command && command.name === userCommand.name) {
-        this.loopTo = command.pointIndexReached;
+  loop() {
+    if (this.successMoveCounter === this.points.length - 1) {
+      resources.emergency_police_car_drive_fast_with_sirens_internal.sound.stop();
 
-        this.completed = get(this.points, `[${this.loopTo}].end`, false);
-      }
+      const win = new Win();
+      const fireworks = new FireWorks();
+      this.addChild(win);
+      this.addChild(fireworks);
+      fireworks.launchParticle();
+      fireworks.loop();
+
+      emitLevelCompleted(this.level.name);
+      return;
     }
 
-    resources.emergency_police_car_drive_fast_with_sirens_internal.sound.play();
+    if (!this.userCommands[this.stepIndex]) {
+      console.log('early stop');
+      return;
+    }
+
+    const { name: direction } = this.userCommands[this.stepIndex];
+    const { allowedDirections, initialDirection } = this.points[this.stepIndex];
+
+    const isAllowed = allowedDirections.indexOf(direction) !== -1;
+    const degree = ROTATION_LOOKUP[direction];
+
+    console.log(`initial direction is ${initialDirection} moving ${direction} is allowed: ${isAllowed}, degree: ${degree} rotation: ${Math.PI * degree / 180}`);
+
+    if (!isAllowed) {
+      const failureMove = MOVE_LOOKUP[direction];
+      new Tween(this.movingItem)
+        .to({
+          rotation: Math.PI * degree / 180,
+        }, 700)
+        .easing(Easing.Sinusoidal.InOut)
+        .on('complete', () => {
+          console.log(`rotation completed y: ${this.movingItem.y}`);
+
+          const forward = {};
+          forward[failureMove.coordinate] = this.movingItem[failureMove.coordinate] + failureMove.failMove;
+          new Tween(this.movingItem)
+            .to(forward, 700)
+            .easing(Easing.Sinusoidal.InOut)
+            .on('complete', () => {
+              console.log(`moved to new position completed y: ${this.movingItem.y}`);
+
+              const back = {};
+              back[failureMove.coordinate] = this.movingItem[failureMove.coordinate] - failureMove.failMove;
+              new Tween(this.movingItem)
+                .to(back, 700)
+                .easing(Easing.Sinusoidal.InOut)
+                .on('complete', () => {
+                  console.log(`moved to initial position completed y: ${this.movingItem.y}`);
+
+                  new Tween(this.movingItem)
+                    .to({
+                      rotation: Math.PI * ROTATION_LOOKUP[initialDirection] / 180,
+                    }, 700)
+                    .easing(Easing.Sinusoidal.InOut).start();
+                })
+                .start();
+            })
+            .start();
+        })
+        .start();
+    } else {
+      // success move
+      this.successMoveCounter += 1;
+      const nextIndex = this.stepIndex + 1;
+      const nextPoint = this.points[nextIndex];
+      const successMove = MOVE_LOOKUP[direction];
+      const nextPointCoordinate = this.level.getChildAt(nextPoint.index)[successMove.coordinate];
+
+      const rotation = Math.PI * degree / 180;
+      const forward = {};
+      forward[successMove.coordinate] = nextPointCoordinate;
+
+      if (this.movingItem.rotation !== rotation) {
+        new Tween(this.movingItem)
+          .to({
+            rotation,
+          }, 700)
+          .easing(Easing.Sinusoidal.InOut)
+          .on('complete', () => {
+            console.log(`move transition with rotation: ${rotation}`, forward);
+            new Tween(this.movingItem)
+              .to(forward, 1500)
+              .easing(Easing.Sinusoidal.InOut)
+              .on('complete', () => {
+                this.stepIndex = nextIndex;
+                this.loop();
+              })
+              .start();
+          })
+          .start();
+      } else {
+        console.log(`move transition without rotation: ${rotation}`, forward);
+        new Tween(this.movingItem)
+          .to(forward, 1500)
+          .easing(Easing.Sinusoidal.InOut)
+          .on('complete', () => {
+            this.stepIndex = nextIndex;
+            this.loop();
+          })
+          .start();
+      }
+    }
+  }
+
+  playClicked(userCommands) {
+    this.userCommands = userCommands;
     this.loop();
   }
 }

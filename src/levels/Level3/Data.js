@@ -9,42 +9,25 @@ const DATA = {
   points: [{
     index: 6,
     start: true,
+    allowedDirections: ['left'],
+    initialDirection: 'left',
   }, {
     index: 7,
-  }, {
-    rotate: -90,
+    allowedDirections: ['up'],
   }, {
     index: 0,
-  }, {
-    rotate: 90,
+    allowedDirections: ['left'],
   }, {
     index: 3,
-  }, {
-    rotate: 90,
+    allowedDirections: ['down'],
   }, {
     index: 8,
-  }, {
-    rotate: -90,
+    allowedDirections: ['left'],
   }, {
     index: 9,
     end: true,
   }],
-  commands: [{
-    name: 'left',
-    pointIndexReached: 1,
-  }, {
-    name: 'up',
-    pointIndexReached: 3,
-  }, {
-    name: 'left',
-    pointIndexReached: 5,
-  }, {
-    name: 'down',
-    pointIndexReached: 7,
-  }, {
-    name: 'left',
-    pointIndexReached: 9,
-  }],
+
 };
 
 export default DATA;
