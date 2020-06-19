@@ -276,6 +276,8 @@ export default class Game extends Container {
       const forward = {};
       forward[successMove.coordinate] = nextPointCoordinate;
 
+      resources.emergency_police_car_drive_fast_with_sirens_internal.sound.play();
+
       if (this.movingItem.rotation !== rotation) {
         new Tween(this.movingItem)
           .to({
@@ -289,6 +291,7 @@ export default class Game extends Container {
               .easing(Easing.Sinusoidal.InOut)
               .on('complete', () => {
                 this.stepIndex = nextIndex;
+                emitLevelStepReached();
                 this.loop();
               })
               .start();
@@ -301,6 +304,7 @@ export default class Game extends Container {
           .easing(Easing.Sinusoidal.InOut)
           .on('complete', () => {
             this.stepIndex = nextIndex;
+            emitLevelStepReached();
             this.loop();
           })
           .start();
