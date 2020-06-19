@@ -9,14 +9,14 @@ const DATA = {
   points: [{
     index: 0,
     start: true,
-    allowedDirections: ['left'],
-    initialDirection: 'left',
+    allowedDirections: ['right'],
+    initialDirection: 'right',
   }, {
     index: 5,
     allowedDirections: ['down'],
   }, {
     index: 12,
-    allowedDirections: ['right'],
+    allowedDirections: ['left'],
   }, {
     index: 7,
     end: true,

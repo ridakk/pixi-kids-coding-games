@@ -1,7 +1,6 @@
 import * as PIXI from 'pixi.js';
 import get from 'lodash/get';
 import set from 'lodash/set';
-import isNil from 'lodash/isNil';
 import { Easing, Tween } from 'es6-tween';
 import eventEmitter from '../../utils/eventEmitter';
 import Commands from '../Commands';
@@ -27,8 +26,8 @@ const { resources } = PIXI.Loader.shared;
 const ROTATION_LOOKUP = {
   up: 0,
   down: 180,
-  left: 90,
-  right: -90,
+  right: 90,
+  left: -90,
 };
 
 const MOVE_LOOKUP = {
@@ -40,11 +39,11 @@ const MOVE_LOOKUP = {
     coordinate: 'y',
     failMove: 50,
   },
-  right: {
+  left: {
     coordinate: 'x',
     failMove: -50,
   },
-  left: {
+  right: {
     coordinate: 'x',
     failMove: 50,
   },
@@ -102,7 +101,7 @@ export default class Game extends Container {
     this.movingItem = new PIXI.Sprite(resources.cars_top.textures.police);
     this.movingItem.scale.set(0.4);
     this.movingItem.anchor.set(0.5);
-    this.movingItem.rotation = Math.PI * ROTATION_LOOKUP.left / 180;
+    this.movingItem.rotation = Math.PI * ROTATION_LOOKUP[this.start.initialDirection] / 180;
     this.movingItem.position.set(startingPoint.x - this.movingItem.width, startingPoint.y);
     this.level.addChild(this.movingItem);
   }

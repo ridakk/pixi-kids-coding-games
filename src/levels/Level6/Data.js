@@ -11,32 +11,32 @@ const DATA = {
   points: [{
     index: 23,
     start: true,
-    allowedDirections: ['left'],
-    initialDirection: 'left',
+    allowedDirections: ['right'],
+    initialDirection: 'right',
   }, {
     index: 28,
     allowedDirections: ['up'],
   }, {
     index: 5,
-    allowedDirections: ['right'],
+    allowedDirections: ['left'],
   }, {
     index: 0,
     allowedDirections: ['down'],
   }, {
     index: 17,
-    allowedDirections: ['left'],
+    allowedDirections: ['right'],
   }, {
     index: 21,
     allowedDirections: ['up'],
   }, {
     index: 10,
-    allowedDirections: ['right'],
+    allowedDirections: ['left'],
   }, {
     index: 7,
     allowedDirections: ['down'],
   }, {
     index: 13,
-    allowedDirections: ['left'],
+    allowedDirections: ['right'],
   }, {
     index: 14,
     end: true,

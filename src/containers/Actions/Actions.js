@@ -16,8 +16,8 @@ export default class Actions extends Container {
 
     this.visible = false;
 
-    this.addArrow('left', 0, 0, 0);
-    this.addArrow('right', 1, 0, 180);
+    this.addArrow('right', 0, 0, 0);
+    this.addArrow('left', 1, 0, 180);
     this.addArrow('up', 0, 1, -90);
     this.addArrow('down', 1, 1, 90);
 

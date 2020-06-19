@@ -7,8 +7,8 @@ const DATA = {
   points: [{
     index: 0,
     start: true,
-    allowedDirections: ['left'],
-    initialDirection: 'left',
+    allowedDirections: ['right'],
+    initialDirection: 'right',
   }, {
     index: 5,
     end: true,
