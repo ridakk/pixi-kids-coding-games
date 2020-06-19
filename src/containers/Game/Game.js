@@ -86,7 +86,7 @@ export default class Game extends Container {
 
     this.points = get(this.level, 'data.points');
     this.commands = get(this.level, 'data.commands');
-    this.start = get(this.level, 'data.points[0]');
+    this.start = this.level.data.points.find((point) => { return point.start === true; });
     this.loopFrom = 0;
     this.loopTo = 0;
     this.completed = false;
@@ -165,6 +165,8 @@ export default class Game extends Container {
     this.removeCurrentLevel();
     this.togglePreviews(true);
     this.getChildByName('note').changeCharacter('?');
+
+    resources.emergency_police_car_drive_fast_with_sirens_internal.sound.stop();
   }
 
   winDismissed() {
@@ -215,7 +217,7 @@ export default class Game extends Container {
     }
 
     if (!this.userCommands[this.stepIndex]) {
-      console.log('early stop');
+      resources.emergency_police_car_drive_fast_with_sirens_internal.sound.stop();
       return;
     }
 
@@ -225,8 +227,6 @@ export default class Game extends Container {
     const isAllowed = allowedDirections.indexOf(direction) !== -1;
     const degree = ROTATION_LOOKUP[direction];
 
-    console.log(`initial direction is ${initialDirection} moving ${direction} is allowed: ${isAllowed}, degree: ${degree} rotation: ${Math.PI * degree / 180}`);
-
     if (!isAllowed) {
       const failureMove = MOVE_LOOKUP[direction];
       new Tween(this.movingItem)
@@ -235,24 +235,18 @@ export default class Game extends Container {
         }, 700)
         .easing(Easing.Sinusoidal.InOut)
         .on('complete', () => {
-          console.log(`rotation completed y: ${this.movingItem.y}`);
-
           const forward = {};
           forward[failureMove.coordinate] = this.movingItem[failureMove.coordinate] + failureMove.failMove;
           new Tween(this.movingItem)
             .to(forward, 700)
             .easing(Easing.Sinusoidal.InOut)
             .on('complete', () => {
-              console.log(`moved to new position completed y: ${this.movingItem.y}`);
-
               const back = {};
               back[failureMove.coordinate] = this.movingItem[failureMove.coordinate] - failureMove.failMove;
               new Tween(this.movingItem)
                 .to(back, 700)
                 .easing(Easing.Sinusoidal.InOut)
                 .on('complete', () => {
-                  console.log(`moved to initial position completed y: ${this.movingItem.y}`);
-
                   new Tween(this.movingItem)
                     .to({
                       rotation: Math.PI * ROTATION_LOOKUP[initialDirection] / 180,
@@ -276,7 +270,9 @@ export default class Game extends Container {
       const forward = {};
       forward[successMove.coordinate] = nextPointCoordinate;
 
-      resources.emergency_police_car_drive_fast_with_sirens_internal.sound.play();
+      if (!resources.emergency_police_car_drive_fast_with_sirens_internal.sound.isPlaying) {
+        resources.emergency_police_car_drive_fast_with_sirens_internal.sound.play();
+      }
 
       if (this.movingItem.rotation !== rotation) {
         new Tween(this.movingItem)
@@ -285,7 +281,6 @@ export default class Game extends Container {
           }, 700)
           .easing(Easing.Sinusoidal.InOut)
           .on('complete', () => {
-            console.log(`move transition with rotation: ${rotation}`, forward);
             new Tween(this.movingItem)
               .to(forward, 1500)
               .easing(Easing.Sinusoidal.InOut)
@@ -298,7 +293,6 @@ export default class Game extends Container {
           })
           .start();
       } else {
-        console.log(`move transition without rotation: ${rotation}`, forward);
         new Tween(this.movingItem)
           .to(forward, 1500)
           .easing(Easing.Sinusoidal.InOut)
